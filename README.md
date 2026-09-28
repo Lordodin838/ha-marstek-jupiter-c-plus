@@ -421,7 +421,7 @@ Grid power is read as **int16**. The widely used community map lists
 <details>
 <summary><b>Tests</b></summary>
 
-`python3 tests/test_integration.py` runs without Home Assistant
+`python3 -m pytest tests/` runs without Home Assistant
 (Python 3.11 or newer). A simulator reproduces the device's quirks: at
 most 8 registers, exceptions when a range is exceeded, stray and late
 responses. Among other things it checks that:

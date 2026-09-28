@@ -426,7 +426,7 @@ dann als rund 65 000 W.
 <details>
 <summary><b>Tests</b></summary>
 
-`python3 tests/test_integration.py` läuft ohne Home Assistant (Python
+`python3 -m pytest tests/` läuft ohne Home Assistant (Python
 3.11 oder neuer). Ein Simulator bildet die Eigenheiten des Geräts nach:
 höchstens 8 Register, Exception bei Bereichsüberschreitung, verirrte
 und verspätete Antworten. Geprüft werden unter anderem:
