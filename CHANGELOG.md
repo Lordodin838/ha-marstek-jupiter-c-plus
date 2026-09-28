@@ -1,5 +1,63 @@
 # Changelog
 
+## 1.2.0
+
+### New
+
+- **Battery charge power and battery discharge power:** two new sensors derived from the
+  existing *Battery power (calculated)* value. *Charge power* is positive when the battery
+  charges (zero otherwise); *discharge power* is positive when the battery discharges (zero
+  otherwise). Both report W and carry the `power` device class, so they integrate directly
+  into the Energy dashboard without extra helpers.
+
+### Improved
+
+- **Services `register_dump` and `read_register`:** both services now carry full
+  `name` and `description` fields in `services.yaml`. An optional `entry_id` parameter
+  selects the target instance when more than one Jupiter integration is set up; without
+  it the service works as before for single-instance setups.
+- **CI workflow:** GitHub Actions runs the full test suite on Python 3.11 and 3.12 in
+  parallel on every push and pull request (pyflakes + pytest).
+- **Dependabot:** weekly checks for GitHub Actions version updates.
+- **Test coverage:** 70 tests across 10 files, including diagnostics, service helpers,
+  and TCP reconnect scenarios.
+
+### Removed
+
+- **MQTT error fallback option:** the “MQTT error sensor as second source” field has been
+  removed from the integration options. Error codes are read exclusively via Modbus.
+
+---
+
+### Deutsch
+
+#### Neu
+
+- **Batterie Ladeleistung und Batterie Entladeleistung:** zwei neue Sensoren, abgeleitet
+  aus dem bestehenden *Batterieleistung (berechnet)*-Wert. *Ladeleistung* ist positiv wenn
+  die Batterie lädt (sonst null); *Entladeleistung* ist positiv wenn die Batterie entlädt
+  (sonst null). Beide liefern W mit der `power`-Device-Klasse und lassen sich direkt im
+  Energie-Dashboard einbinden – keine zusätzlichen Helper nötig.
+
+#### Verbessert
+
+- **Dienste `register_dump` und `read_register`:** beide Dienste haben jetzt vollständige
+  `name`- und `description`-Felder in `services.yaml`. Ein optionaler Parameter `entry_id`
+  wählt die Ziel-Instanz, wenn mehrere Jupiter-Integrationen eingerichtet sind; ohne ihn
+  verhält sich der Dienst wie bisher.
+- **CI-Workflow:** GitHub Actions führt die gesamte Test-Suite auf Python 3.11 und 3.12
+  parallel aus – bei jedem Push und Pull-Request (pyflakes + pytest).
+- **Dependabot:** wöchentliche Prüfung auf neue Versionen der GitHub Actions.
+- **Testabdeckung:** 70 Tests in 10 Dateien, darunter Diagnostics, Service-Hilfsfunktionen
+  und TCP-Reconnect-Szenarien.
+
+#### Entfernt
+
+- **MQTT-Fehlercode-Fallback:** Das Optionsfeld „MQTT-Fehlersensor als zweite Quelle“
+  wurde entfernt. Fehlercodes werden ausschließlich über Modbus gelesen.
+
+---
+
 ## 1.1.0
 
 ### New

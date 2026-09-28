@@ -1,4 +1,7 @@
-from enum import StrEnum
+from enum import Enum
+
+class StrEnum(str, Enum):
+    pass
 
 # Testattrappe: merkt sich angelegte Meldungen in einem Dict.
 ISSUES: dict[tuple[str, str], dict] = {}
