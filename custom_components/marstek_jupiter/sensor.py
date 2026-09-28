@@ -152,6 +152,23 @@ def _battery_power(data: JupiterData) -> StateType:
     return int(pv) - to_int16(grid)
 
 
+
+def _battery_charge_power(data: "JupiterData") -> "StateType":
+    """Ladeleistung der Batterie (nur positive Werte von battery_power)."""
+    val = _battery_power(data)
+    if val is None:
+        return None
+    return max(0, int(val))
+
+
+def _battery_discharge_power(data: "JupiterData") -> "StateType":
+    """Entladeleistung der Batterie (nur positive Werte, wenn Batterie entlädt)."""
+    val = _battery_power(data)
+    if val is None:
+        return None
+    return max(0, -int(val))
+
+
 def _cell_delta(data: JupiterData) -> StateType:
     """Zelldrift in mV.
 
@@ -254,6 +271,24 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         state_class=SensorStateClass.MEASUREMENT,
         legacy_unique_id="jupiter_battery_power_calculated",
         legacy_platform="template",
+    ),
+    JupiterSensorDescription(
+        key="battery_charge_power",
+        translation_key="battery_charge_power",
+        addresses=(*ADDR_PV_POWER, ADDR_GRID_POWER),
+        value_fn=_battery_charge_power,
+        native_unit_of_measurement=UnitOfPower.WATT,
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
+    ),
+    JupiterSensorDescription(
+        key="battery_discharge_power",
+        translation_key="battery_discharge_power",
+        addresses=(*ADDR_PV_POWER, ADDR_GRID_POWER),
+        value_fn=_battery_discharge_power,
+        native_unit_of_measurement=UnitOfPower.WATT,
+        device_class=SensorDeviceClass.POWER,
+        state_class=SensorStateClass.MEASUREMENT,
     ),
     JupiterSensorDescription(
         key="battery_voltage",

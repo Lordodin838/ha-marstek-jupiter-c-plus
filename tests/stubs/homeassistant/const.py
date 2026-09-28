@@ -1,4 +1,7 @@
-from enum import StrEnum
+from enum import Enum
+
+class StrEnum(str, Enum):
+    pass
 
 class EntityCategory(StrEnum):
     CONFIG = "config"

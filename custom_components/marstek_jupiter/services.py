@@ -54,6 +54,7 @@ SCHEMA_DUMP = vol.Schema(
     {
         vol.Optional("label", default="abzug"): cv.string,
         vol.Optional("sweep", default=False): cv.boolean,
+        vol.Optional("entry_id"): cv.string,
     }
 )
 
@@ -66,11 +67,17 @@ SCHEMA_READ = vol.Schema(
         vol.Optional("data_type", default="uint16"): vol.In(
             ["uint16", "int16", "uint32", "int32", "string", "raw"]
         ),
+        vol.Optional("entry_id"): cv.string,
     }
 )
 
 
-def _only_client(hass: HomeAssistant):
+def _client_for_entry(hass: HomeAssistant, entry_id: str | None = None):
+    """Gibt den Modbus-Client der angeforderten (oder einzigen) Instanz zurueck.
+
+    Bei mehreren konfigurierten Jupiter-Instanzen muss ``entry_id`` angegeben
+    werden. Ist nur eine vorhanden, wird sie ohne Angabe verwendet.
+    """
     entries = [
         entry
         for entry in hass.config_entries.async_entries(DOMAIN)
@@ -78,6 +85,19 @@ def _only_client(hass: HomeAssistant):
     ]
     if not entries:
         raise HomeAssistantError("Keine eingerichtete Jupiter-Integration gefunden")
+    if entry_id is not None:
+        matched = [e for e in entries if e.entry_id == entry_id]
+        if not matched:
+            raise HomeAssistantError(
+                f"Keine Jupiter-Instanz mit entry_id '{entry_id}' gefunden"
+            )
+        return matched[0].runtime_data.coordinator.client
+    if len(entries) > 1:
+        titles = ", ".join(e.title for e in entries)
+        raise HomeAssistantError(
+            f"Mehrere Jupiter-Instanzen vorhanden ({titles}). "
+            "Bitte 'entry_id' im Service-Aufruf angeben."
+        )
     return entries[0].runtime_data.coordinator.client
 
 
@@ -86,7 +106,7 @@ def async_setup_services(hass: HomeAssistant) -> None:
         return
 
     async def _handle_read(call: ServiceCall) -> ServiceResponse:
-        client = _only_client(hass)
+        client = _client_for_entry(hass, call.data.get("entry_id"))
         address = call.data["address"]
         count = call.data["count"]
         data_type = call.data["data_type"]
@@ -108,7 +128,7 @@ def async_setup_services(hass: HomeAssistant) -> None:
         }
 
     async def _handle_dump(call: ServiceCall) -> ServiceResponse:
-        client = _only_client(hass)
+        client = _client_for_entry(hass, call.data.get("entry_id"))
         label = call.data["label"]
         sweep = call.data["sweep"]
 
