@@ -1,5 +1,8 @@
 from dataclasses import dataclass
-from enum import StrEnum
+from enum import Enum
+
+class StrEnum(str, Enum):
+    pass
 
 @dataclass(frozen=True, kw_only=True)
 class EntityDescription:
