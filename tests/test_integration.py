@@ -140,6 +140,9 @@ def test_sensor_values() -> None:
     # PV 3 W, Netz 162 W Abgabe -> 159 W aus der Batterie.
     # Deckt sich mit dem Wert, den die bisherige Template-Loesung zeigt.
     equal("Batterieleistung berechnet", values["battery_power"], -159)
+    # PV 3 W, Netz 162 W Abgabe -> 159 W aus der Batterie (Entladung)
+    equal("Batterie Ladeleistung (Entladung)", values["battery_charge_power"], 0)
+    equal("Batterie Entladeleistung", values["battery_discharge_power"], 159)
 
 
 # --- 4. Plausibilitaetsfilter ----------------------------------------
