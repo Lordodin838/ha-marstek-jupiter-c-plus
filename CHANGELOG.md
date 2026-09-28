@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.1
+
+Das Repository heißt jetzt `ha-marstek-jupiter-c-plus` — HACS nimmt keine Repository-Namen auf, die "HACS" enthalten. `documentation` und `issue_tracker` im Manifest sowie die Links in beiden READMEs zeigen auf den neuen Namen. Am Code der Integration ändert sich nichts. Alte Links leiten weiter, ein manuelles Eingreifen ist nicht nötig.
+
+The repository is now called `ha-marstek-jupiter-c-plus` — HACS does not accept repository names containing "HACS". The `documentation` and `issue_tracker` URLs in the manifest and the links in both READMEs point to the new name. No functional change. Old links keep redirecting, nothing to do on your side.
+
+---
+
 ## 1.2.0
 
 Erste reguläre Version der 1.2er-Reihe, inhaltlich identisch mit 1.2.0b2: die beiden Sensoren für Batterie-Ladeleistung und -Entladeleistung, `entry_id` für die Dienste, Testsuite auf pytest, CI auf Python 3.11 und 3.12, MQTT-Fehler-Fallback entfernt, Temperaturwerte unter 5 °C werden nicht mehr verworfen, Mindestversion Home Assistant 2024.11.0. Die vollständige Auflistung mit Begründungen steht im Abschnitt 1.2.0b2 weiter unten.

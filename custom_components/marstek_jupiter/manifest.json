@@ -6,13 +6,13 @@
   ],
   "config_flow": true,
   "dependencies": [],
-  "documentation": "https://github.com/Lordodin838/ha-marstek-jupiter-c-plus",
+  "documentation": "https://github.com/Lordodin838/marstek-jupiter-c-plus-hacs",
   "integration_type": "device",
   "iot_class": "local_polling",
-  "issue_tracker": "https://github.com/Lordodin838/ha-marstek-jupiter-c-plus/issues",
+  "issue_tracker": "https://github.com/Lordodin838/marstek-jupiter-c-plus-hacs/issues",
   "loggers": [
     "custom_components.marstek_jupiter"
   ],
   "requirements": [],
-  "version": "1.2.0"
+  "version": "1.2.1"
 }
