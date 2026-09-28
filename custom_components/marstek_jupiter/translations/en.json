@@ -210,12 +210,6 @@
       },
       "comm_firmware": {
         "name": "Communication module firmware"
-      },
-      "battery_charge_power": {
-        "name": "Battery charge power"
-      },
-      "battery_discharge_power": {
-        "name": "Battery discharge power"
       }
     },
     "binary_sensor": {
