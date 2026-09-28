@@ -140,3 +140,76 @@ async def test_discover_finds_known_range():
     finally:
         await client.close()
         await sim.stop()
+
+
+# ---------------------------------------------------------------------------
+# _client_for_entry: bei mehreren Instanzen darf nicht geraten werden
+# ---------------------------------------------------------------------------
+
+class _FakeClient:
+    def __init__(self, name):
+        self.name = name
+
+
+class _FakeEntry:
+    def __init__(self, entry_id, title):
+        self.entry_id = entry_id
+        self.title = title
+        coordinator = type("C", (), {"client": _FakeClient(title)})()
+        self.runtime_data = type("RT", (), {"coordinator": coordinator})()
+
+
+class _FakeHass:
+    def __init__(self, entries):
+        self.config_entries = type(
+            "CE", (), {"async_entries": staticmethod(lambda _domain: entries)}
+        )()
+
+
+def test_single_instance_needs_no_entry_id():
+    from custom_components.marstek_jupiter.services import _client_for_entry
+
+    only = _FakeEntry("aaa", "Jupiter Garage")
+    assert _client_for_entry(_FakeHass([only])).name == "Jupiter Garage"
+
+
+def test_entry_id_picks_the_right_instance():
+    from custom_components.marstek_jupiter.services import _client_for_entry
+
+    one = _FakeEntry("aaa", "Jupiter Garage")
+    two = _FakeEntry("bbb", "Jupiter Balkon")
+    picked = _client_for_entry(_FakeHass([one, two]), "bbb")
+    assert picked.name == "Jupiter Balkon"
+
+
+def test_two_instances_without_entry_id_raise():
+    from homeassistant.exceptions import HomeAssistantError
+
+    from custom_components.marstek_jupiter.services import _client_for_entry
+
+    one = _FakeEntry("aaa", "Jupiter Garage")
+    two = _FakeEntry("bbb", "Jupiter Balkon")
+    with pytest.raises(HomeAssistantError) as err:
+        _client_for_entry(_FakeHass([one, two]))
+    # Der Fehler muss weiterhelfen, nicht nur meckern.
+    assert "Jupiter Garage" in str(err.value)
+    assert "Jupiter Balkon" in str(err.value)
+
+
+def test_unknown_entry_id_raises():
+    from homeassistant.exceptions import HomeAssistantError
+
+    from custom_components.marstek_jupiter.services import _client_for_entry
+
+    only = _FakeEntry("aaa", "Jupiter Garage")
+    with pytest.raises(HomeAssistantError):
+        _client_for_entry(_FakeHass([only]), "gibt-es-nicht")
+
+
+def test_no_instance_raises():
+    from homeassistant.exceptions import HomeAssistantError
+
+    from custom_components.marstek_jupiter.services import _client_for_entry
+
+    with pytest.raises(HomeAssistantError):
+        _client_for_entry(_FakeHass([]))
