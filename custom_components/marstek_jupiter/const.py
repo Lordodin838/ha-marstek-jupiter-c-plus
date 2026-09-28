@@ -162,7 +162,15 @@ VALID_RANGES: Final[dict[int, tuple[int, int]]] = {
     **{a: (0, 1000) for a in ADDR_PV_VOLTAGE},      # 0 - 100,0 V
     **{a: (0, 300) for a in ADDR_PV_CURRENT},       # 0 - 30,0 A
     **{a: (0, 2000) for a in ADDR_PV_POWER},        # W
-    ADDR_TEMPERATURE: (50, 700),                    # 5,0 - 70,0 Grad
+    # 0,0 - 70,0 Grad. Die Untergrenze lag bis 1.2.0b1 bei 5,0 Grad -
+    # damit wurde bei Aufstellung im Freien oder in einer kalten Garage
+    # ueber den ganzen Winter jeder Messwert verworfen, und der Sensor
+    # blieb still auf dem letzten Herbstwert stehen, ohne dass es
+    # auffiel. Ob das Register unter null als int16 weiterzaehlt, ist
+    # offen: dann erschienen Minusgrade als rund 65000 und wuerden hier
+    # weiterhin (richtigerweise) verworfen. Wer das pruefen kann, moege
+    # 0x000E im Frost gegen die Aussentemperatur halten.
+    ADDR_TEMPERATURE: (0, 700),                     # 0,0 - 70,0 Grad
     ADDR_BATTERY_VOLTAGE: (400, 600),               # 40,0 - 60,0 V
     ADDR_BATTERY_SOC: (0, 100),                     # %
     ADDR_CELL_VOLTAGE_MAX: (2000, 4000),            # 2,000 - 4,000 V
