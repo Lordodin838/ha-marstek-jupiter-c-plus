@@ -34,8 +34,11 @@ jobs:
           VERSION: ${{ inputs.version }}
         run: |
           set -eu
-          if ! echo "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'; then
-            echo "::error::Version muss die Form 1.2.3 haben, ist aber '$VERSION'"
+          # Vorabversionen wie 1.2.0b2 sind erlaubt; sie werden unten als
+          # Pre-Release angelegt, damit HACS sie nur Nutzern anbietet, die
+          # Beta-Versionen eingeschaltet haben.
+          if ! echo "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+(b[0-9]+)?$'; then
+            echo "::error::Version muss die Form 1.2.3 oder 1.2.3b4 haben, ist aber '$VERSION'"
             exit 1
           fi
           MANIFEST=$(python3 -c "import json;print(json.load(open('custom_components/marstek_jupiter/manifest.json'))['version'])")
@@ -74,17 +77,23 @@ jobs:
 
       - name: Tests
         run: |
-          pip install voluptuous pyflakes
-          python -m pyflakes custom_components
-          python tests/test_integration.py
+          pip install pytest pytest-asyncio voluptuous pyflakes
+          python -m pyflakes custom_components/marstek_jupiter/
+          python -m pytest tests/ -q
 
       - name: Tag und Release anlegen
         env:
           GH_TOKEN: ${{ github.token }}
           VERSION: ${{ inputs.version }}
         run: |
+          # Eine Vorabversion (1.2.0b2) darf nicht als "latest" gelten,
+          # sonst bekaeme sie jeder HACS-Nutzer angeboten.
+          case "$VERSION" in
+            *b*) FLAG="--prerelease" ;;
+            *)   FLAG="--latest" ;;
+          esac
           gh release create "$VERSION" \
             --target "$GITHUB_SHA" \
             --title "$VERSION" \
             --notes-file /tmp/notes.md \
-            --latest
+            $FLAG
