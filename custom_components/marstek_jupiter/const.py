@@ -19,7 +19,6 @@ CONF_STATUS_INTERVAL: Final = "status_interval"
 CONF_TIMEOUT: Final = "timeout"
 CONF_MESSAGE_WAIT: Final = "message_wait"
 CONF_ADOPT_LEGACY: Final = "adopt_legacy"
-CONF_ERROR_FALLBACK: Final = "error_fallback"
 
 DEFAULT_PORT: Final = 502
 DEFAULT_UNIT_ID: Final = 1

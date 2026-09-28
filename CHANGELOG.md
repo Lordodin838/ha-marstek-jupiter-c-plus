@@ -40,7 +40,10 @@
 ### Removed
 
 - **MQTT error fallback option:** the "MQTT error sensor as second source" field is gone
-  from the options. Error codes are read exclusively over Modbus.
+  from the options, and so is the code behind it. Error codes are read exclusively over
+  Modbus, which makes the integration fully local. The trade-off: a very short fault can
+  slip through between two polls. Lower the polling interval or act on the
+  `marstek_jupiter_error` event if that matters to you.
 
 ### Note
 
@@ -89,7 +92,10 @@ described in its release notes. Everything listed there ships with this version.
 #### Entfernt
 
 - **MQTT-Fehlercode-Fallback:** das Optionsfeld „MQTT-Fehlersensor als zweite Quelle" ist
-  entfallen. Fehlercodes werden ausschließlich über Modbus gelesen.
+  entfallen, und mit ihm der Code dahinter. Fehlercodes werden ausschließlich über Modbus
+  gelesen, die Integration ist damit vollständig lokal. Der Preis: ein sehr kurzer Fehler
+  kann zwischen zwei Abfragen durchrutschen. Wen das stört, setzt den Abfragetakt herunter
+  oder wertet das Ereignis `marstek_jupiter_error` aus.
 
 #### Hinweis
 
