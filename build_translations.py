@@ -20,6 +20,8 @@ SENSOR_NAMES = {
     "pv_total_power": ("PV Gesamtleistung", "PV total power"),
     "grid_power": ("Netzleistung", "Grid power"),
     "battery_power": ("Batterieleistung (berechnet)", "Battery power (calculated)"),
+    "battery_charge_power": ("Batterie Ladeleistung", "Battery charge power"),
+    "battery_discharge_power": ("Batterie Entladeleistung", "Battery discharge power"),
     "pv_energy": ("PV Energie", "PV energy"),
     "battery_charge_energy": ("Batterie geladen", "Battery charged"),
     "battery_discharge_energy": ("Batterie entladen", "Battery discharged"),

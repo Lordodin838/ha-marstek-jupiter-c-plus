@@ -210,12 +210,6 @@
       },
       "comm_firmware": {
         "name": "Kommunikationsmodul-Firmware"
-      },
-      "battery_charge_power": {
-        "name": "Batterie Ladeleistung"
-      },
-      "battery_discharge_power": {
-        "name": "Batterie Entladeleistung"
       }
     },
     "binary_sensor": {
