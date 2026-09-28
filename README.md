@@ -162,7 +162,7 @@ and the status flags `0x1000`–`0x1003`, `0x1009`, `0x100A`. Use the
 services below to inspect them.
 
 **Not provided by the device:** no register for DC battery power
-(`0x000E` is not it), none for depth of discharge (only via hm2mqtt), no
+(`0x000E` is not it), none for depth of discharge, no
 individual voltages of the 16 cells. `0x4000`–`0x43FF` is write-only.
 This integration never writes to the device.
 
@@ -229,7 +229,6 @@ actions:
 | Status flags | 300 s |
 | Timeout | 5 s |
 | Pause between requests | 0.15 s |
-| MQTT error sensor as second source | – |
 
 > Rule of thumb: **few requests slowly beat many requests fast.** Do not
 > set the timeout below 5 s – otherwise a late response arrives and is
@@ -411,8 +410,7 @@ Grid power is read as **int16**. The widely used community map lists
 - **Grid power oscillates.** This is real: the CT control follows the
   house load and overshoots. A Shelly at the grid connection shows the
   same. Don't filter it out.
-- **After a firmware update** the phase detection may be 0 – run it
-  once more via hm2mqtt.
+- **After a firmware update** the phase detection may be 0 – restart the device once.
 - **`0x0011` is the error code**, not the battery current. The register
   returns in decimal what the manual lists in hex (1062 = 0x426).
 - **`0x0020` / `0x0021` are cell voltages**, not temperatures: value

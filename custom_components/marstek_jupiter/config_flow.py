@@ -15,13 +15,11 @@ from homeassistant.config_entries import (
 )
 from homeassistant.const import CONF_HOST, CONF_PORT
 from homeassistant.core import callback
-from homeassistant.helpers import selector
 
 from .const import (
     ADDR_DEVICE_TYPE,
     ADDR_MAC,
     CONF_ADOPT_LEGACY,
-    CONF_ERROR_FALLBACK,
     CONF_FAST_INTERVAL,
     CONF_MESSAGE_WAIT,
     CONF_SLOW_INTERVAL,
@@ -156,14 +154,6 @@ class JupiterOptionsFlow(OptionsFlow):
                     CONF_MESSAGE_WAIT,
                     default=current(CONF_MESSAGE_WAIT, DEFAULT_MESSAGE_WAIT),
                 ): vol.All(vol.Coerce(float), vol.Range(0, 2)),
-                vol.Optional(
-                    CONF_ERROR_FALLBACK,
-                    description={
-                        "suggested_value": current(CONF_ERROR_FALLBACK, None)
-                    },
-                ): selector.EntitySelector(
-                    selector.EntitySelectorConfig(domain="sensor")
-                ),
             }
         )
         return self.async_show_form(step_id="init", data_schema=schema)
