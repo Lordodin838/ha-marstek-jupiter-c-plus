@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2.0
+
+Erste reguläre Version der 1.2er-Reihe, inhaltlich identisch mit 1.2.0b2: die beiden Sensoren für Batterie-Ladeleistung und -Entladeleistung, `entry_id` für die Dienste, Testsuite auf pytest, CI auf Python 3.11 und 3.12, MQTT-Fehler-Fallback entfernt, Temperaturwerte unter 5 °C werden nicht mehr verworfen, Mindestversion Home Assistant 2024.11.0. Die vollständige Auflistung mit Begründungen steht im Abschnitt 1.2.0b2 weiter unten.
+
+Same content as 1.2.0b2, promoted to a stable release: battery charge and discharge power sensors, `entry_id` for the services, pytest test suite, CI on Python 3.11 and 3.12, MQTT error fallback removed, temperature readings below 5 °C no longer discarded, minimum Home Assistant version 2024.11.0. See the 1.2.0b2 section below for the full list.
+
+---
+
 ## 1.2.0b2
 
 ### New
