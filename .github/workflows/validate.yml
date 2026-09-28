@@ -5,8 +5,39 @@ on:
     branches: ["**"]
   pull_request:
     branches: ["**"]
+  schedule:
+    # Woechentlich, damit ein Bruch durch eine neue Home-Assistant- oder
+    # HACS-Version auffaellt, auch wenn hier gerade niemand committet.
+    - cron: "0 4 * * 1"
 
 jobs:
+  # Prueft manifest.json, services.yaml, Uebersetzungen und Struktur
+  # gegen die Regeln von Home Assistant. Meldet genau das, was
+  # HACS-Nutzer sonst als Erstes trifft.
+  hassfest:
+    name: hassfest
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: home-assistant/actions/hassfest@master
+
+  # Die HACS-Pruefung holt hacs.json und manifest.json unangemeldet von
+  # raw.githubusercontent.com. Bei einem privaten Repository antwortet
+  # das mit 404, und HACS meldet daraufhin "invalid hacs.json" und
+  # "expected a dictionary. Got None" - obwohl beide Dateien in Ordnung
+  # sind; hassfest prueft manifest.json aus dem Checkout und ist
+  # zufrieden. Deshalb laeuft dieser Job erst, wenn das Repository
+  # oeffentlich ist. Dann greift er von selbst wieder.
+  hacs:
+    name: HACS
+    if: ${{ github.event.repository.private == false }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: hacs/action@main
+        with:
+          category: integration
+
   validate:
     name: Tests & static analysis (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
