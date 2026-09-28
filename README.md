@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/Lordodin838/marstek-jupiter-c-plus-hacs/main/custom_components/marstek_jupiter/brand/icon@2x.png" alt="Logo" width="112">
+  <img src="https://raw.githubusercontent.com/Lordodin838/ha-marstek-jupiter-c-plus/main/custom_components/marstek_jupiter/brand/icon@2x.png" alt="Logo" width="112">
 </p>
 
 <h1 align="center">Marstek Jupiter C+</h1>
@@ -10,13 +10,13 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/Lordodin838/marstek-jupiter-c-plus-hacs/releases"><img src="https://img.shields.io/github/v/release/Lordodin838/marstek-jupiter-c-plus-hacs?label=Version" alt="Version"></a>
+  <a href="https://github.com/Lordodin838/ha-marstek-jupiter-c-plus/releases"><img src="https://img.shields.io/github/v/release/Lordodin838/ha-marstek-jupiter-c-plus?label=Version" alt="Version"></a>
   <a href="https://hacs.xyz"><img src="https://img.shields.io/badge/HACS-Custom-41BDF5" alt="HACS"></a>
-  <a href="https://github.com/Lordodin838/marstek-jupiter-c-plus-hacs/actions/workflows/validate.yml"><img src="https://img.shields.io/github/actions/workflow/status/Lordodin838/marstek-jupiter-c-plus-hacs/validate.yml?label=Tests" alt="Tests"></a>
+  <a href="https://github.com/Lordodin838/ha-marstek-jupiter-c-plus/actions/workflows/validate.yml"><img src="https://img.shields.io/github/actions/workflow/status/Lordodin838/ha-marstek-jupiter-c-plus/validate.yml?label=Tests" alt="Tests"></a>
 </p>
 
 <p align="center">
-  <b>🇬🇧 English</b> · <a href="https://github.com/Lordodin838/marstek-jupiter-c-plus-hacs/blob/main/README.de.md">🇩🇪 Deutsch</a>
+  <b>🇬🇧 English</b> · <a href="https://github.com/Lordodin838/ha-marstek-jupiter-c-plus/blob/main/README.de.md">🇩🇪 Deutsch</a>
 </p>
 
 ---
@@ -43,7 +43,7 @@ Tested with firmware 142.37.213.110, device type Jupiter C 800 W.
 **Via HACS**
 
 1. HACS → ⋮ → *Custom repositories*
-2. Add `https://github.com/Lordodin838/marstek-jupiter-c-plus-hacs`,
+2. Add `https://github.com/Lordodin838/ha-marstek-jupiter-c-plus`,
    category *Integration*
 3. Download *Marstek Jupiter C+* and restart Home Assistant
 4. *Settings → Devices & services → Add integration →
@@ -435,4 +435,4 @@ responses. Among other things it checks that:
 
 ---
 
-MIT license · [Report an issue](https://github.com/Lordodin838/marstek-jupiter-c-plus-hacs/issues)
+MIT license · [Report an issue](https://github.com/Lordodin838/ha-marstek-jupiter-c-plus/issues)
