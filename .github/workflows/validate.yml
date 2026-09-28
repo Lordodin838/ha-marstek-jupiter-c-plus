@@ -2,12 +2,20 @@ name: Validate
 
 on:
   push:
+    branches: ["**"]
   pull_request:
+    branches: ["**"]
   schedule:
+    # Woechentlich, damit ein Bruch durch eine neue Home-Assistant- oder
+    # HACS-Version auffaellt, auch wenn hier gerade niemand committet.
     - cron: "0 4 * * 1"
 
 jobs:
+  # Prueft manifest.json, services.yaml, Uebersetzungen und Struktur
+  # gegen die Regeln von Home Assistant. Meldet genau das, was
+  # HACS-Nutzer sonst als Erstes trifft.
   hassfest:
+    name: hassfest
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -21,6 +29,7 @@ jobs:
   # zufrieden. Deshalb laeuft dieser Job erst, wenn das Repository
   # oeffentlich ist. Dann greift er von selbst wieder.
   hacs:
+    name: HACS
     if: ${{ github.event.repository.private == false }}
     runs-on: ubuntu-latest
     steps:
@@ -29,15 +38,32 @@ jobs:
         with:
           category: integration
 
-  tests:
+  validate:
+    name: Tests & static analysis (Python ${{ matrix.python-version }})
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.11", "3.12"]
+
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
         with:
-          python-version: "3.12"
-      - run: pip install voluptuous pyflakes
-      # Findet undefinierte Namen und Tippfehler auch in Code, den die
-      # Tests nicht durchlaufen (etwa async_setup_entry).
-      - run: python -m pyflakes custom_components
-      - run: python tests/test_integration.py
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pytest pytest-asyncio voluptuous pyflakes
+
+      - name: Run pyflakes
+        run: |
+          python -m pyflakes custom_components/marstek_jupiter/
+
+      - name: Run pytest
+        run: |
+          python -m pytest tests/ -v

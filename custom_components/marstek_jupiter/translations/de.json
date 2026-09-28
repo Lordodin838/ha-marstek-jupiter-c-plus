@@ -32,12 +32,10 @@
           "slow_interval": "Langsamer Takt (Zähler, Versionen)",
           "status_interval": "Statusflags",
           "timeout": "Zeitüberschreitung in Sekunden",
-          "message_wait": "Pause zwischen zwei Anfragen in Sekunden",
-          "error_fallback_entity": "MQTT-Fehlersensor als zweite Quelle"
+          "message_wait": "Pause zwischen zwei Anfragen in Sekunden"
         },
         "data_description": {
-          "timeout": "Unter 5 Sekunden wird es kritisch: gibt Home Assistant zu früh auf, trifft die Antwort trotzdem ein und wird der nächsten Anfrage zugeordnet.",
-          "error_fallback_entity": "Optional. Steht das Modbus-Register auf 0, wird dieser Sensor herangezogen - er hält einen Fehlercode länger."
+          "timeout": "Unter 5 Sekunden wird es kritisch: gibt Home Assistant zu früh auf, trifft die Antwort trotzdem ein und wird der nächsten Anfrage zugeordnet."
         }
       }
     }

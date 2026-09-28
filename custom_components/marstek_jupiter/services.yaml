@@ -1,28 +1,58 @@
 register_dump:
+  name: Register dump
+  description: >
+    Reads all accessible Modbus registers of the Jupiter C+ and writes
+    a JSON and TXT report to the Home Assistant config directory
+    (marstek_jupiter/regdump_<label>_<timestamp>.json/.txt).
+    Fires a marstek_jupiter_register_dump event with the file path.
   fields:
     label:
+      name: Label
+      description: Short label appended to the file name.
       required: false
       default: abzug
       example: vor-update
       selector:
         text:
     sweep:
+      name: Full sweep
+      description: >
+        Also scans the full 16-bit address space (0x0000–0xFFFF) for
+        registers outside the known ranges. Slower, but finds hidden blocks.
       required: false
       default: false
       selector:
         boolean:
 
+    entry_id:
+      name: Entry ID
+      description: >
+        Only needed when multiple Jupiter C+ instances are configured.
+        Leave empty to use the single instance automatically.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:
+
 read_register:
+  name: Read register
+  description: >
+    Reads one or more Modbus holding registers and returns the decoded
+    value. Useful for inspecting undocumented registers without a full dump.
   fields:
     address:
+      name: Address
+      description: Modbus register address (decimal or hex, e.g. 17 or 0x0011).
       required: true
-      example: 4138
+      example: 17
       selector:
         number:
           min: 0
           max: 65535
           mode: box
     count:
+      name: Count
+      description: Number of consecutive registers to read (1–8).
       required: false
       default: 1
       selector:
@@ -31,6 +61,14 @@ read_register:
           max: 8
           mode: box
     data_type:
+      name: Data type
+      description: >
+        How the raw register value(s) should be interpreted.
+        uint16: unsigned 16-bit (default).
+        int16: signed 16-bit (negative values possible).
+        uint32/int32: two registers combined.
+        string: ASCII text.
+        raw: list of raw register values.
       required: false
       default: uint16
       selector:
@@ -42,3 +80,12 @@ read_register:
             - int32
             - string
             - raw
+    entry_id:
+      name: Entry ID
+      description: >
+        Only needed when multiple Jupiter C+ instances are configured.
+        Leave empty to use the single instance automatically.
+      required: false
+      example: "abc123def456"
+      selector:
+        text:

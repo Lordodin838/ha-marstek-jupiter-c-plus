@@ -165,7 +165,7 @@ untersuchen will, nimmt die Dienste unten.
 
 **Was das Gerät nicht liefert:** kein Register für die
 DC-Batterieleistung (`0x000E` ist es nicht), keines für die Entladetiefe
-(läuft nur über hm2mqtt), keine Einzelspannungen der 16 Zellen.
+keine Einzelspannungen der 16 Zellen.
 `0x4000`–`0x43FF` ist write-only. Diese Integration schreibt nicht ins
 Gerät.
 
@@ -232,7 +232,6 @@ actions:
 | Statusflags | 300 s |
 | Zeitüberschreitung | 5 s |
 | Pause zwischen zwei Anfragen | 0,15 s |
-| MQTT-Fehlersensor als zweite Quelle | – |
 
 > Faustregel: **lieber wenige Anfragen langsam als viele schnell.** Die
 > Zeitüberschreitung nicht unter 5 s setzen – sonst trifft eine späte
@@ -416,7 +415,6 @@ dann als rund 65 000 W.
   Hauslast nach und überschwingt. Ein Shelly am Hausanschluss zeigt
   dasselbe. Nicht wegfiltern.
 - **Nach einem Firmware-Update** kann die Phasendiagnose auf 0 stehen –
-  einmal über hm2mqtt neu starten.
 - **`0x0011` ist der Fehlercode**, nicht der Batteriestrom. Das Register
   liefert dezimal, was das Handbuch hexadezimal notiert
   (1062 = 0x426).
@@ -428,7 +426,7 @@ dann als rund 65 000 W.
 <details>
 <summary><b>Tests</b></summary>
 
-`python3 tests/test_integration.py` läuft ohne Home Assistant (Python
+`python3 -m pytest tests/` läuft ohne Home Assistant (Python
 3.11 oder neuer). Ein Simulator bildet die Eigenheiten des Geräts nach:
 höchstens 8 Register, Exception bei Bereichsüberschreitung, verirrte
 und verspätete Antworten. Geprüft werden unter anderem:

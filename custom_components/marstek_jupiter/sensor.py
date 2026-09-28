@@ -51,7 +51,6 @@ from .const import (
     ADDR_VERSION_INV,
     ADDR_VERSION_MPPT,
     ADDR_VERSION_SCREEN,
-    CONF_ERROR_FALLBACK,
     DEVICE_TYPES,
     block_for_address,
     error_text,
@@ -688,13 +687,16 @@ class JupiterEnergySensor(JupiterEntity, RestoreSensor):
 
 
 class JupiterErrorTextSensor(JupiterEntity, SensorEntity):
-    """Fehlercode im Klartext, mit optionaler zweiter Quelle.
+    """Fehlercode im Klartext, ausschliesslich aus dem Modbus-Register.
 
-    Vorrang hat das Modbus-Register: lokal, live und unabhaengig von der
-    Marstek-Cloud. Steht es auf 0 und ist ein MQTT-Fehlersensor
-    hinterlegt, wird dessen Wert genommen - MQTT haelt einen Code laenger,
-    ein sehr kurzer Fehler kann im Register zwischen zwei Abfragen
-    durchrutschen.
+    Bis 1.2.0b1 konnte ein MQTT-Fehlersensor als zweite Quelle hinterlegt
+    werden: stand das Register auf 0, wurde dessen Wert genommen, weil
+    MQTT einen Code laenger haelt. Seit 1.2.0b2 ist das entfernt - die
+    Integration ist damit vollstaendig lokal und haengt an keiner zweiten
+    Entitaet mehr. Preis dieser Entscheidung: ein sehr kurzer Fehler kann
+    zwischen zwei Abfragen durchrutschen. Wer das nicht will, setzt den
+    Abfragetakt herunter oder wertet das Ereignis marstek_jupiter_error
+    aus.
     """
 
     _attr_translation_key = "error_text"
@@ -709,9 +711,6 @@ class JupiterErrorTextSensor(JupiterEntity, SensorEntity):
         super().__init__(
             coordinator, entry.entry_id, "error_text", blocks_for((ADDR_ERROR_CODE,))
         )
-        self._fallback_entity: str | None = entry.options.get(
-            CONF_ERROR_FALLBACK
-        ) or entry.data.get(CONF_ERROR_FALLBACK)
         if (previous := adopted.get("error_text")) is not None:
             self.entity_id = previous
 
@@ -722,17 +721,6 @@ class JupiterErrorTextSensor(JupiterEntity, SensorEntity):
         code = self.coordinator.data.registers.get(ADDR_ERROR_CODE)
         if code is None:
             return None
-        if not code and self._fallback_entity:
-            state = self.hass.states.get(self._fallback_entity)
-            if state is not None and state.state not in (
-                "unknown",
-                "unavailable",
-                "",
-            ):
-                try:
-                    code = int(float(state.state))
-                except (TypeError, ValueError):
-                    code = 0
         return error_text(int(code))
 
     @property
@@ -744,5 +732,4 @@ class JupiterErrorTextSensor(JupiterEntity, SensorEntity):
         return {
             "modbus_code": raw,
             "modbus_code_hex": None if raw is None else f"0x{raw:X}",
-            "fallback_entity": self._fallback_entity,
         }
