@@ -7,12 +7,9 @@
         "data": {
           "host": "IP-Adresse",
           "port": "Port",
-          "unit_id": "Modbus-Adresse des Geräts",
-          "adopt_legacy": "Bisherige Entity-IDs übernehmen"
+          "unit_id": "Modbus-Adresse des Geräts"
         },
-        "data_description": {
-          "adopt_legacy": "Übernimmt die IDs einer früheren YAML-Lösung, damit Verlauf, Statistik, Dashboards und Automationen weiterlaufen. Dafür muss das alte Paket vorher entfernt und Home Assistant neu gestartet sein."
-        }
+        "data_description": {}
       }
     },
     "error": {

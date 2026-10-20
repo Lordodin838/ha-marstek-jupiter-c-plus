@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.2.3
+
+### Fixed
+
+- **`sensor.py` and `binary_sensor.py` still referenced `adopted_entity_ids`.**
+  The `_adopt_legacy_entities` feature was removed in v1.2.2 but two files
+  still called `entry.runtime_data.adopted_entity_ids`, causing a setup error
+  and leaving all entities unavailable after the update. The `adopted` parameter
+  and the `entity_id` override are now gone from both files.
+- **Translation strings for `adopt_legacy`** removed from `strings.json`,
+  `translations/en.json` and `translations/de.json`.
+
+### Behoben
+
+- **`sensor.py` und `binary_sensor.py` griffen noch auf `adopted_entity_ids` zu.**
+  Die Legacy-Übernahme wurde in v1.2.2 entfernt, aber beide Dateien riefen noch
+  `entry.runtime_data.adopted_entity_ids` auf — dadurch schlug das Setup fehl
+  und alle Entitäten blieben nach dem Update nicht verfügbar. Der `adopted`-
+  Parameter und die `entity_id`-Zuweisung sind jetzt in beiden Dateien entfernt.
+- **Übersetzungsstrings für `adopt_legacy`** aus `strings.json`,
+  `translations/en.json` und `translations/de.json` entfernt.
+
+---
+
 ## 1.2.2
 
 ### Removed (HACS review feedback)
