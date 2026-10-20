@@ -31,8 +31,8 @@
 - 🛡️ **Robust against the Elfin's quirks** – stray and late responses
   are detected and discarded
 - 🧾 **Error code in plain text** – as a notice under *Repairs* and as an event for push notifications
-- 🔁 **Migrate from YAML without losing data** – existing entity IDs
-  and their history are adopted
+- 🔁 **Migrate from YAML** – see the migration section below for how to
+  preserve entity IDs and history
 
 Tested with firmware 142.37.213.110, device type Jupiter C 800 W.
 
@@ -280,38 +280,37 @@ response_variable: result
 ## Migrating from a YAML setup
 
 <details>
-<summary><b>Adopt existing entity IDs</b></summary>
+<summary><b>Preserving entity IDs and history</b></summary>
 
-The integration adopts the entity IDs of an earlier Modbus and template
-configuration. History, statistics, dashboards and automations keep
-working without changes.
+The integration creates its own entity IDs. If you want dashboards,
+automations and long-term statistics to keep working without changes,
+rename the new entities to the old IDs manually after the migration.
 
-**Order matters:**
+**Order:**
 
-1. Disable the old package, e.g. rename `jupiter_c_plus_modbus.yaml` →
-   `jupiter_c_plus_modbus.yaml.off`, together with its template
-   sensors.
-2. **Restart Home Assistant.** Only then are the IDs free.
-3. Add the integration and leave *Adopt existing entity IDs* ticked.
+1. Remove (or disable) the old YAML package, e.g. rename
+   `jupiter_c_plus_modbus.yaml` → `jupiter_c_plus_modbus.yaml.off`,
+   together with its template sensors.
+2. **Restart Home Assistant.** Only then are the old IDs free.
+3. Add the integration.
+4. In *Settings → Entities*, rename each new entity to the old entity ID
+   you want to keep.
 
-If the old package is still active, nothing is adopted and a warning is
-logged.
-
-| previous (unique_id) | becomes |
+| previous entity ID | new entity (rename target) |
 |---|---|
-| `jupiter_modbus_pv1..4_voltage/current/power` | PV1–4 voltage/current/power |
-| `jupiter_modbus_grid_power`, `_battery_voltage`, `_battery_soc` | Grid power, battery voltage, state of charge |
-| `jupiter_modbus_daily/monthly_generation/grid` | Device counters |
-| `jupiter_modbus_cell_voltage_max/min` | Cell voltages |
-| `jupiter_modbus_*_version`, `_device_id`, `_device_type`, `_mac`, `_comm_version` | Diagnostics |
-| `jupiter_diag_0011` | Error code |
-| `jupiter_modbus_pv1..4_status`, `_inv_status` | Status |
-| `jupiter_modbus_total_pv_power` (template) | PV total power |
-| `jupiter_battery_power_calculated` (template) | Battery power (calculated) |
-| `jupiter_cell_voltage_delta` (template) | Cell voltage delta |
-| `jupiter_error_code_text` (template) | Error description |
-| `jupiter_temperature_filtered` (template) | Temperature |
-| `jupiter_modbus_device_type_text` (template) | Device type |
+| `sensor.jupiter_modbus_pv1..4_voltage/current/power` | PV1–4 voltage/current/power |
+| `sensor.jupiter_modbus_grid_power`, `_battery_voltage`, `_battery_soc` | Grid power, battery voltage, state of charge |
+| `sensor.jupiter_modbus_daily/monthly_generation/grid` | Device counters |
+| `sensor.jupiter_modbus_cell_voltage_max/min` | Cell voltages |
+| `sensor.jupiter_modbus_*_version`, `_device_id`, `_device_type`, `_mac`, `_comm_version` | Diagnostics |
+| `sensor.jupiter_diag_0011` | Error code |
+| `binary_sensor.jupiter_modbus_pv1..4_status`, `_inv_status` | Status |
+| `sensor.jupiter_modbus_total_pv_power` | PV total power |
+| `sensor.jupiter_battery_power_calculated` | Battery power (calculated) |
+| `sensor.jupiter_cell_voltage_delta` | Cell voltage delta |
+| `sensor.jupiter_error_code_text` | Error description |
+| `sensor.jupiter_temperature_filtered` | Temperature |
+| `sensor.jupiter_modbus_device_type_text` | Device type |
 
 </details>
 
@@ -324,15 +323,6 @@ logged.
 
 The folder name is wrong, see *Manual installation*. Rename the folder
 to `marstek_jupiter` and restart.
-
-</details>
-
-<details>
-<summary><b>Log: “… bisherige Entitaeten sind noch aktiv …”</b></summary>
-
-(The integration logs in German: “N existing entities are still
-active”.) The old YAML package is still loaded, so two programs are
-polling the same converter. Rename the package to `.off` and restart.
 
 </details>
 

@@ -32,8 +32,8 @@
 - 🛡️ **Robust gegen die Eigenheiten des Elfin** – verirrte und
   verspätete Antworten werden erkannt und verworfen
 - 🧾 **Fehlercode im Klartext** – als Meldung unter *Reparaturen* und als Ereignis für Push-Nachrichten
-- 🔁 **Umstieg von YAML ohne Datenverlust** – bisherige Entity-IDs samt
-  Verlauf werden übernommen
+- 🔁 **Umstieg von YAML** – wie Entity-IDs und Verlauf erhalten bleiben,
+  steht im Abschnitt zur Migration weiter unten
 
 Getestet mit Firmware 142.37.213.110, Gerätetyp Jupiter C 800 W.
 
@@ -283,39 +283,37 @@ response_variable: ergebnis
 ## Umstieg von einer YAML-Lösung
 
 <details>
-<summary><b>Bisherige Entity-IDs übernehmen</b></summary>
+<summary><b>Entity-IDs und Verlauf erhalten</b></summary>
 
-Die Integration übernimmt die Entity-IDs einer früheren Modbus- und
-Template-Konfiguration. Verlauf, Statistik, Dashboards und Automationen
-laufen dann ohne Nacharbeit weiter.
+Die Integration vergibt eigene Entity-IDs. Wer Dashboards, Automationen
+und Langzeitstatistiken ohne Nacharbeit weiternutzen möchte, benennt
+die neuen Entitäten nach der Migration manuell auf die alten IDs um.
 
 **Reihenfolge:**
 
-1. Altes Paket deaktivieren, zum Beispiel `jupiter_c_plus_modbus.yaml`
-   → `jupiter_c_plus_modbus.yaml.aus`, samt der zugehörigen
-   Template-Sensoren.
-2. **Home Assistant neu starten.** Erst dann sind die IDs frei.
-3. Integration hinzufügen, Haken bei *Bisherige Entity-IDs übernehmen*
-   stehen lassen.
+1. Altes Paket entfernen (oder deaktivieren), zum Beispiel
+   `jupiter_c_plus_modbus.yaml` → `jupiter_c_plus_modbus.yaml.aus`,
+   samt der zugehörigen Template-Sensoren.
+2. **Home Assistant neu starten.** Erst dann sind die alten IDs frei.
+3. Integration hinzufügen.
+4. Unter *Einstellungen → Entitäten* jede neue Entität auf die gewünschte
+   alte Entity-ID umbenennen.
 
-Ist das alte Paket noch aktiv, übernimmt die Integration nichts und
-schreibt eine Warnung ins Protokoll.
-
-| bisher (unique_id) | wird zu |
+| bisherige Entity-ID | neue Entität (Umbenennungsziel) |
 |---|---|
-| `jupiter_modbus_pv1..4_voltage/current/power` | PV1–4 Spannung/Strom/Leistung |
-| `jupiter_modbus_grid_power`, `_battery_voltage`, `_battery_soc` | Netzleistung, Batteriespannung, Ladezustand |
-| `jupiter_modbus_daily/monthly_generation/grid` | Gerätezähler |
-| `jupiter_modbus_cell_voltage_max/min` | Zellspannungen |
-| `jupiter_modbus_*_version`, `_device_id`, `_device_type`, `_mac`, `_comm_version` | Diagnose |
-| `jupiter_diag_0011` | Fehlercode |
-| `jupiter_modbus_pv1..4_status`, `_inv_status` | Status |
-| `jupiter_modbus_total_pv_power` (template) | PV Gesamtleistung |
-| `jupiter_battery_power_calculated` (template) | Batterieleistung (berechnet) |
-| `jupiter_cell_voltage_delta` (template) | Zellspannungs-Differenz |
-| `jupiter_error_code_text` (template) | Fehlercode Klartext |
-| `jupiter_temperature_filtered` (template) | Temperatur |
-| `jupiter_modbus_device_type_text` (template) | Gerätetyp |
+| `sensor.jupiter_modbus_pv1..4_voltage/current/power` | PV1–4 Spannung/Strom/Leistung |
+| `sensor.jupiter_modbus_grid_power`, `_battery_voltage`, `_battery_soc` | Netzleistung, Batteriespannung, Ladezustand |
+| `sensor.jupiter_modbus_daily/monthly_generation/grid` | Gerätezähler |
+| `sensor.jupiter_modbus_cell_voltage_max/min` | Zellspannungen |
+| `sensor.jupiter_modbus_*_version`, `_device_id`, `_device_type`, `_mac`, `_comm_version` | Diagnose |
+| `sensor.jupiter_diag_0011` | Fehlercode |
+| `binary_sensor.jupiter_modbus_pv1..4_status`, `_inv_status` | Status |
+| `sensor.jupiter_modbus_total_pv_power` | PV Gesamtleistung |
+| `sensor.jupiter_battery_power_calculated` | Batterieleistung (berechnet) |
+| `sensor.jupiter_cell_voltage_delta` | Zellspannungs-Differenz |
+| `sensor.jupiter_error_code_text` | Fehlercode Klartext |
+| `sensor.jupiter_temperature_filtered` | Temperatur |
+| `sensor.jupiter_modbus_device_type_text` | Gerätetyp |
 
 </details>
 
@@ -328,14 +326,6 @@ schreibt eine Warnung ins Protokoll.
 
 Der Ordnername stimmt nicht, siehe *Installation von Hand*. Ordner nach
 `marstek_jupiter` umbenennen und neu starten.
-
-</details>
-
-<details>
-<summary><b>„N bisherige Entitäten sind noch aktiv" im Protokoll</b></summary>
-
-Das alte YAML-Paket ist noch geladen, und zwei Programme fragen
-denselben Umsetzer ab. Paket auf `.aus` umbenennen und neu starten.
 
 </details>
 
