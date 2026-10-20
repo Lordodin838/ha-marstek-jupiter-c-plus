@@ -54,7 +54,7 @@ def _error_sensor(register_value):
     coordinator.data = JupiterData()
     if register_value is not None:
         coordinator.data.registers[0x0011] = register_value
-    return sn.JupiterErrorTextSensor(coordinator, _Entry(), {})
+    return sn.JupiterErrorTextSensor(coordinator, _Entry())
 
 
 def test_error_text_from_register():
@@ -80,7 +80,7 @@ def test_error_text_has_no_second_source():
     coordinator = _Coordinator()
     coordinator.data = JupiterData()
     coordinator.data.registers[0x0011] = 0
-    sensor = sn.JupiterErrorTextSensor(coordinator, entry, {})
+    sensor = sn.JupiterErrorTextSensor(coordinator, entry)
 
     assert sensor.native_value == "kein Fehler"
     assert "fallback_entity" not in sensor.extra_state_attributes
