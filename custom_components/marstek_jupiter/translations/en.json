@@ -7,12 +7,9 @@
         "data": {
           "host": "IP address",
           "port": "Port",
-          "unit_id": "Modbus unit ID",
-          "adopt_legacy": "Adopt existing entity IDs"
+          "unit_id": "Modbus unit ID"
         },
-        "data_description": {
-          "adopt_legacy": "Takes over the IDs of a previous YAML setup so that history, statistics, dashboards and automations keep working. The old package must be removed and Home Assistant restarted first."
-        }
+        "data_description": {}
       }
     },
     "error": {

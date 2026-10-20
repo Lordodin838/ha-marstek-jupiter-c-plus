@@ -48,9 +48,8 @@ async def async_setup_entry(
     async_add_entities: AddEntitiesCallback,
 ) -> None:
     coordinator: JupiterCoordinator = entry.runtime_data.coordinator
-    adopted = entry.runtime_data.adopted_entity_ids
     async_add_entities(
-        JupiterBinarySensor(coordinator, entry.entry_id, description, adopted)
+        JupiterBinarySensor(coordinator, entry.entry_id, description)
         for description in BINARY_SENSORS
     )
 
@@ -63,7 +62,6 @@ class JupiterBinarySensor(JupiterEntity, BinarySensorEntity):
         coordinator: JupiterCoordinator,
         entry_id: str,
         description: JupiterBinaryDescription,
-        adopted: dict[str, str],
     ) -> None:
         block = block_for_address(description.address)
         super().__init__(
@@ -73,8 +71,6 @@ class JupiterBinarySensor(JupiterEntity, BinarySensorEntity):
             (block,) if block else (),
         )
         self.entity_description = description
-        if (previous := adopted.get(description.key)) is not None:
-            self.entity_id = previous
 
     @property
     def is_on(self) -> bool | None:

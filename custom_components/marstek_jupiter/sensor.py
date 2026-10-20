@@ -551,13 +551,12 @@ async def async_setup_entry(
 ) -> None:
     """Sensoren einrichten."""
     coordinator: JupiterCoordinator = entry.runtime_data.coordinator
-    adopted: dict[str, str] = entry.runtime_data.adopted_entity_ids
 
     entities: list[SensorEntity] = [
-        JupiterSensor(coordinator, entry.entry_id, description, adopted)
+        JupiterSensor(coordinator, entry.entry_id, description)
         for description in SENSORS
     ]
-    entities.append(JupiterErrorTextSensor(coordinator, entry, adopted))
+    entities.append(JupiterErrorTextSensor(coordinator, entry))
     entities.extend(
         JupiterEnergySensor(coordinator, entry.entry_id, description)
         for description in ENERGY_SENSORS
@@ -575,7 +574,6 @@ class JupiterSensor(JupiterEntity, SensorEntity):
         coordinator: JupiterCoordinator,
         entry_id: str,
         description: JupiterSensorDescription,
-        adopted: dict[str, str],
     ) -> None:
         super().__init__(
             coordinator,
@@ -584,10 +582,6 @@ class JupiterSensor(JupiterEntity, SensorEntity):
             blocks_for(description.addresses),
         )
         self.entity_description = description
-        # Die frueher vergebene Entity-ID uebernehmen, damit Verlauf,
-        # Statistik, Dashboards und Automationen weiterlaufen.
-        if (previous := adopted.get(description.key)) is not None:
-            self.entity_id = previous
 
     @property
     def native_value(self) -> StateType:
@@ -668,13 +662,10 @@ class JupiterErrorTextSensor(JupiterEntity, SensorEntity):
         self,
         coordinator: JupiterCoordinator,
         entry: ConfigEntry,
-        adopted: dict[str, str],
     ) -> None:
         super().__init__(
             coordinator, entry.entry_id, "error_text", blocks_for((ADDR_ERROR_CODE,))
         )
-        if (previous := adopted.get("error_text")) is not None:
-            self.entity_id = previous
 
     @property
     def native_value(self) -> StateType:
