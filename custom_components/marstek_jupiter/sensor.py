@@ -74,11 +74,6 @@ class JupiterSensorDescription(SensorEntityDescription):
 
     addresses: tuple[int, ...]
     value_fn: Callable[[JupiterData], StateType]
-    # unique_id der bisherigen YAML-Entitaet. Wird beim Einrichten
-    # uebernommen, damit Entity-ID, Verlauf und Langzeitstatistik
-    # erhalten bleiben.
-    legacy_unique_id: str | None = None
-    legacy_platform: str = "modbus"
 
 
 def _raw(address: int) -> Callable[[JupiterData], StateType]:
@@ -206,7 +201,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
             device_class=SensorDeviceClass.VOLTAGE,
             state_class=SensorStateClass.MEASUREMENT,
             suggested_display_precision=1,
-            legacy_unique_id=f"jupiter_modbus_pv{n + 1}_voltage",
         )
         for n in range(4)
     ],
@@ -220,7 +214,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
             device_class=SensorDeviceClass.CURRENT,
             state_class=SensorStateClass.MEASUREMENT,
             suggested_display_precision=1,
-            legacy_unique_id=f"jupiter_modbus_pv{n + 1}_current",
         )
         for n in range(4)
     ],
@@ -233,7 +226,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
             native_unit_of_measurement=UnitOfPower.WATT,
             device_class=SensorDeviceClass.POWER,
             state_class=SensorStateClass.MEASUREMENT,
-            legacy_unique_id=f"jupiter_modbus_pv{n + 1}_power",
         )
         for n in range(4)
     ],
@@ -245,8 +237,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         native_unit_of_measurement=UnitOfPower.WATT,
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,
-        legacy_unique_id="jupiter_modbus_total_pv_power",
-        legacy_platform="template",
     ),
     # --- Netz und Batterie --------------------------------------------
     JupiterSensorDescription(
@@ -257,7 +247,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         native_unit_of_measurement=UnitOfPower.WATT,
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,
-        legacy_unique_id="jupiter_modbus_grid_power",
     ),
     JupiterSensorDescription(
         key="battery_power",
@@ -267,8 +256,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         native_unit_of_measurement=UnitOfPower.WATT,
         device_class=SensorDeviceClass.POWER,
         state_class=SensorStateClass.MEASUREMENT,
-        legacy_unique_id="jupiter_battery_power_calculated",
-        legacy_platform="template",
     ),
     JupiterSensorDescription(
         key="battery_charge_power",
@@ -297,7 +284,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         device_class=SensorDeviceClass.VOLTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=1,
-        legacy_unique_id="jupiter_modbus_battery_voltage",
     ),
     JupiterSensorDescription(
         key="battery_soc",
@@ -307,7 +293,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         native_unit_of_measurement=PERCENTAGE,
         device_class=SensorDeviceClass.BATTERY,
         state_class=SensorStateClass.MEASUREMENT,
-        legacy_unique_id="jupiter_modbus_battery_soc",
     ),
     # --- Energiezaehler -----------------------------------------------
     JupiterSensorDescription(
@@ -319,7 +304,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         device_class=SensorDeviceClass.ENERGY,
         state_class=SensorStateClass.TOTAL_INCREASING,
         suggested_display_precision=2,
-        legacy_unique_id="jupiter_modbus_daily_generation",
     ),
     JupiterSensorDescription(
         key="monthly_generation",
@@ -330,7 +314,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         device_class=SensorDeviceClass.ENERGY,
         state_class=SensorStateClass.TOTAL_INCREASING,
         suggested_display_precision=2,
-        legacy_unique_id="jupiter_modbus_monthly_generation",
     ),
     JupiterSensorDescription(
         key="daily_grid",
@@ -341,7 +324,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         device_class=SensorDeviceClass.ENERGY,
         state_class=SensorStateClass.TOTAL_INCREASING,
         suggested_display_precision=2,
-        legacy_unique_id="jupiter_modbus_daily_grid",
     ),
     JupiterSensorDescription(
         key="monthly_grid",
@@ -352,7 +334,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         device_class=SensorDeviceClass.ENERGY,
         state_class=SensorStateClass.TOTAL_INCREASING,
         suggested_display_precision=2,
-        legacy_unique_id="jupiter_modbus_monthly_grid",
     ),
     # --- Zellspannungen -------------------------------------------------
     # 0x0020 und 0x0021, durch Registersuche gefunden und in keiner
@@ -371,7 +352,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         device_class=SensorDeviceClass.VOLTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=3,
-        legacy_unique_id="jupiter_modbus_cell_voltage_max",
     ),
     JupiterSensorDescription(
         key="cell_voltage_min",
@@ -382,7 +362,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         device_class=SensorDeviceClass.VOLTAGE,
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=3,
-        legacy_unique_id="jupiter_modbus_cell_voltage_min",
     ),
     JupiterSensorDescription(
         key="cell_voltage_delta",
@@ -391,8 +370,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         value_fn=_cell_delta,
         native_unit_of_measurement="mV",
         state_class=SensorStateClass.MEASUREMENT,
-        legacy_unique_id="jupiter_cell_voltage_delta",
-        legacy_platform="template",
     ),
     # --- Temperatur ------------------------------------------------------
     # 0x000E. Als Leistungswert widerlegt (stand konstant auf 300, waehrend
@@ -410,8 +387,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
         suggested_display_precision=1,
-        legacy_unique_id="jupiter_temperature_filtered",
-        legacy_platform="template",
     ),
     JupiterSensorDescription(
         key="temperature_raw",
@@ -424,7 +399,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         suggested_display_precision=1,
         entity_category=EntityCategory.DIAGNOSTIC,
         entity_registry_enabled_default=False,
-        legacy_unique_id="jupiter_modbus_temperature_suspected",
     ),
     # --- Fehlercode -------------------------------------------------------
     # 0x0011 am 18.09.2026 identifiziert: hm2mqtt meldete dreimal Fehler
@@ -437,7 +411,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         addresses=(ADDR_ERROR_CODE,),
         value_fn=_raw(ADDR_ERROR_CODE),
         entity_category=EntityCategory.DIAGNOSTIC,
-        legacy_unique_id="jupiter_diag_0011",
     ),
     # --- Versionen und Geraeteinfo ---------------------------------------
     JupiterSensorDescription(
@@ -447,7 +420,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         value_fn=_raw(ADDR_DEVICE_ID),
         entity_category=EntityCategory.DIAGNOSTIC,
         entity_registry_enabled_default=False,
-        legacy_unique_id="jupiter_modbus_device_id",
     ),
     JupiterSensorDescription(
         key="ems_version",
@@ -455,7 +427,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         addresses=(ADDR_VERSION_EMS,),
         value_fn=_raw(ADDR_VERSION_EMS),
         entity_category=EntityCategory.DIAGNOSTIC,
-        legacy_unique_id="jupiter_modbus_ems_version",
     ),
     JupiterSensorDescription(
         key="inv_version",
@@ -463,7 +434,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         addresses=(ADDR_VERSION_INV,),
         value_fn=_raw(ADDR_VERSION_INV),
         entity_category=EntityCategory.DIAGNOSTIC,
-        legacy_unique_id="jupiter_modbus_inv_version",
     ),
     JupiterSensorDescription(
         key="mppt_version",
@@ -471,7 +441,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         addresses=(ADDR_VERSION_MPPT,),
         value_fn=_raw(ADDR_VERSION_MPPT),
         entity_category=EntityCategory.DIAGNOSTIC,
-        legacy_unique_id="jupiter_modbus_mppt_version",
     ),
     JupiterSensorDescription(
         key="bms_version",
@@ -479,7 +448,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         addresses=(ADDR_VERSION_BMS,),
         value_fn=_raw(ADDR_VERSION_BMS),
         entity_category=EntityCategory.DIAGNOSTIC,
-        legacy_unique_id="jupiter_modbus_bms_version",
     ),
     JupiterSensorDescription(
         key="screen_version",
@@ -487,7 +455,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         addresses=(ADDR_VERSION_SCREEN,),
         value_fn=_raw(ADDR_VERSION_SCREEN),
         entity_category=EntityCategory.DIAGNOSTIC,
-        legacy_unique_id="jupiter_modbus_screen_version",
     ),
     JupiterSensorDescription(
         key="device_type",
@@ -496,7 +463,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         value_fn=_raw(ADDR_DEVICE_TYPE),
         entity_category=EntityCategory.DIAGNOSTIC,
         entity_registry_enabled_default=False,
-        legacy_unique_id="jupiter_modbus_device_type",
     ),
     JupiterSensorDescription(
         key="device_type_text",
@@ -504,8 +470,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         addresses=(ADDR_DEVICE_TYPE,),
         value_fn=_device_type_text,
         entity_category=EntityCategory.DIAGNOSTIC,
-        legacy_unique_id="jupiter_modbus_device_type_text",
-        legacy_platform="template",
     ),
     # 0x1100-0x1105 und 0x1200-0x1205, am 18.09.2026 durch die Grobsuche
     # gefunden und in der Community-Registerkarte nicht vorhanden. Die
@@ -518,7 +482,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         value_fn=_ascii(ADDR_MAC),
         entity_category=EntityCategory.DIAGNOSTIC,
         entity_registry_enabled_default=False,
-        legacy_unique_id="jupiter_modbus_mac",
     ),
     JupiterSensorDescription(
         key="comm_firmware",
@@ -526,7 +489,6 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         addresses=tuple(ADDR_COMM_FIRMWARE + i for i in range(6)),
         value_fn=_ascii(ADDR_COMM_FIRMWARE),
         entity_category=EntityCategory.DIAGNOSTIC,
-        legacy_unique_id="jupiter_modbus_comm_version",
     ),
     # Die ungeklaerten Register 0x0012, 0x0023 und die Statusflags
     # 0x1000-0x1003, 0x1009, 0x100A hatten bis 1.0.0 eigene (abgeschaltete)

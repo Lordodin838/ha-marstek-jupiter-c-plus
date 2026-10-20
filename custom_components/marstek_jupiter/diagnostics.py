@@ -56,5 +56,4 @@ async def async_get_config_entry_diagnostics(
             if data
             else {}
         ),
-        "uebernommene_entity_ids": entry.runtime_data.adopted_entity_ids,
     }

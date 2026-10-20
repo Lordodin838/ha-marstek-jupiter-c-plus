@@ -18,7 +18,6 @@ CONF_SLOW_INTERVAL: Final = "slow_interval"
 CONF_STATUS_INTERVAL: Final = "status_interval"
 CONF_TIMEOUT: Final = "timeout"
 CONF_MESSAGE_WAIT: Final = "message_wait"
-CONF_ADOPT_LEGACY: Final = "adopt_legacy"
 
 DEFAULT_PORT: Final = 502
 DEFAULT_UNIT_ID: Final = 1
