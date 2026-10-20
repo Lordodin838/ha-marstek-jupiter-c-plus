@@ -36,10 +36,3 @@ def test_entity_keys_unique():
     assert len(keys) == len(set(keys)), "Entitaets-Schluessel nicht eindeutig"
 
 
-def test_legacy_ids_unique():
-    legacy = [
-        d.legacy_unique_id
-        for d in (*sn.SENSORS, *bs.BINARY_SENSORS)
-        if d.legacy_unique_id
-    ]
-    assert len(legacy) == len(set(legacy)), "uebernommene unique_ids nicht eindeutig"

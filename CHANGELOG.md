@@ -1,5 +1,38 @@
 # Changelog
 
+## 1.2.2
+
+### Removed (HACS review feedback)
+
+- **Legacy entity adoption removed.** `_adopt_legacy_entities`, the `adopt_legacy`
+  config option and the `legacy_unique_id` / `legacy_platform` fields in
+  `sensor.py` and `binary_sensor.py` are gone. The code looked up registry
+  entries of the `modbus` and `template` platforms and deleted them — an
+  integration must not remove registry entries it does not own. Migrations
+  from the old YAML package are now described in the README instead: remove
+  the old package, restart Home Assistant, then rename the new entities to
+  the old entity IDs in the UI if you want to preserve history.
+- **`manifest.json` URLs corrected.** `documentation` and `issue_tracker` still
+  pointed to the old repository name `marstek-jupiter-c-plus-hacs`; both now
+  point to `ha-marstek-jupiter-c-plus`.
+
+### Entfernt (HACS-Review-Feedback)
+
+- **Legacy-Übernahme entfernt.** `_adopt_legacy_entities`, die Option
+  `adopt_legacy` und die Felder `legacy_unique_id` / `legacy_platform` in
+  `sensor.py` und `binary_sensor.py` sind weggefallen. Der Code suchte
+  Registrierungseinträge der Plattformen `modbus` und `template` und löschte
+  sie — eine Integration darf keine ihr nicht gehörenden Einträge entfernen.
+  Die Migration vom alten YAML-Paket ist jetzt im README beschrieben:
+  altes Paket entfernen, Home Assistant neu starten, dann die neuen Entitäten
+  in der UI auf die alten Entity-IDs umbenennen, falls Verlauf erhalten
+  bleiben soll.
+- **`manifest.json`-URLs korrigiert.** `documentation` und `issue_tracker`
+  zeigten noch auf den alten Repository-Namen `marstek-jupiter-c-plus-hacs`;
+  beide zeigen jetzt auf `ha-marstek-jupiter-c-plus`.
+
+---
+
 ## 1.2.1
 
 Das Repository heißt jetzt `ha-marstek-jupiter-c-plus` — HACS nimmt keine Repository-Namen auf, die "HACS" enthalten. `documentation` und `issue_tracker` im Manifest sowie die Links in beiden READMEs zeigen auf den neuen Namen. Am Code der Integration ändert sich nichts. Alte Links leiten weiter, ein manuelles Eingreifen ist nicht nötig.

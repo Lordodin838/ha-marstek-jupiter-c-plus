@@ -19,7 +19,6 @@ from homeassistant.core import callback
 from .const import (
     ADDR_DEVICE_TYPE,
     ADDR_MAC,
-    CONF_ADOPT_LEGACY,
     CONF_FAST_INTERVAL,
     CONF_MESSAGE_WAIT,
     CONF_SLOW_INTERVAL,
@@ -49,7 +48,6 @@ STEP_USER = vol.Schema(
         vol.Optional(CONF_UNIT_ID, default=DEFAULT_UNIT_ID): vol.All(
             vol.Coerce(int), vol.Range(0, 247)
         ),
-        vol.Optional(CONF_ADOPT_LEGACY, default=True): bool,
     }
 )
 

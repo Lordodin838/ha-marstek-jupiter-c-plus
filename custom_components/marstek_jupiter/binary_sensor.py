@@ -21,8 +21,6 @@ from .entity import JupiterEntity
 @dataclass(frozen=True, kw_only=True)
 class JupiterBinaryDescription(BinarySensorEntityDescription):
     address: int
-    legacy_unique_id: str | None = None
-    legacy_platform: str = "modbus"
 
 
 BINARY_SENSORS: tuple[JupiterBinaryDescription, ...] = (
@@ -32,7 +30,6 @@ BINARY_SENSORS: tuple[JupiterBinaryDescription, ...] = (
             translation_key=f"pv{n + 1}_status",
             address=ADDR_STATUS_PV[n],
             device_class=BinarySensorDeviceClass.RUNNING,
-            legacy_unique_id=f"jupiter_modbus_pv{n + 1}_status",
         )
         for n in range(4)
     ],
@@ -41,7 +38,6 @@ BINARY_SENSORS: tuple[JupiterBinaryDescription, ...] = (
         translation_key="inverter_status",
         address=ADDR_STATUS_INVERTER,
         device_class=BinarySensorDeviceClass.RUNNING,
-        legacy_unique_id="jupiter_modbus_inv_status",
     ),
 )
 

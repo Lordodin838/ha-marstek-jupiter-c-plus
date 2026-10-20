@@ -29,7 +29,6 @@ def _make_entry(data: JupiterData | None, host: str = "192.168.1.100"):
 
     runtime_data = SimpleNamespace(
         coordinator=coordinator,
-        adopted_entity_ids=["sensor.jupiter_pv_leistung"],
     )
 
     entry = MagicMock()
@@ -56,7 +55,7 @@ async def test_top_level_keys_present():
     entry = _make_entry(_make_data())
     result = await async_get_config_entry_diagnostics(None, entry)
     for key in ("konfiguration", "bloecke", "register", "verworfene_werte",
-                "anfragen_gesamt", "energie_seit_start_kwh", "uebernommene_entity_ids"):
+                "anfragen_gesamt", "energie_seit_start_kwh"):
         assert key in result, f"Schluessel fehlt: {key}"
 
 
@@ -121,8 +120,3 @@ async def test_data_none_does_not_crash():
     assert result["energie_seit_start_kwh"] == {}
 
 
-@pytest.mark.asyncio
-async def test_adopted_entity_ids_forwarded():
-    entry = _make_entry(_make_data())
-    result = await async_get_config_entry_diagnostics(None, entry)
-    assert result["uebernommene_entity_ids"] == ["sensor.jupiter_pv_leistung"]
