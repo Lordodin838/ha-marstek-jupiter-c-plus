@@ -294,10 +294,19 @@ die neuen Entitäten nach der Migration manuell auf die alten IDs um.
 1. Altes Paket entfernen (oder deaktivieren), zum Beispiel
    `jupiter_c_plus_modbus.yaml` → `jupiter_c_plus_modbus.yaml.aus`,
    samt der zugehörigen Template-Sensoren.
-2. **Home Assistant neu starten.** Erst dann sind die alten IDs frei.
-3. Integration hinzufügen.
-4. Unter *Einstellungen → Entitäten* jede neue Entität auf die gewünschte
-   alte Entity-ID umbenennen.
+2. **Home Assistant neu starten.** Die alten Entitäten stehen jetzt auf
+   *wird nicht mehr bereitgestellt*.
+3. Sie unter *Einstellungen → Geräte & Dienste → Entitäten* löschen
+   (filtern, auswählen, *Ausgewählte entfernen*). Damit sind ihre
+   Entity-IDs frei; Verlauf und Statistik bleiben gespeichert.
+4. Integration hinzufügen.
+5. Jede neue Entität öffnen → ⚙️ und die *Entitäts-ID* auf die alte
+   ändern. Verlauf und Statistik laufen weiter.
+
+Schritte 1–3 zuerst: Solange das alte Paket läuft, fragen zwei Programme
+denselben Umsetzer ab, und seine Antworten geraten durcheinander. Meldet
+*Entwicklerwerkzeuge → Statistiken* danach eine geänderte Einheit, dort
+die Einheit der alten Statistik anpassen.
 
 | bisherige Entity-ID | neue Entität (Umbenennungsziel) |
 |---|---|
