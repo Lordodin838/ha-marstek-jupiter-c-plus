@@ -291,10 +291,19 @@ rename the new entities to the old IDs manually after the migration.
 1. Remove (or disable) the old YAML package, e.g. rename
    `jupiter_c_plus_modbus.yaml` → `jupiter_c_plus_modbus.yaml.off`,
    together with its template sensors.
-2. **Restart Home Assistant.** Only then are the old IDs free.
-3. Add the integration.
-4. In *Settings → Entities*, rename each new entity to the old entity ID
-   you want to keep.
+2. **Restart Home Assistant.** The old entities now show as
+   *no longer provided*.
+3. Delete them under *Settings → Devices & services → Entities*
+   (filter, select, *Remove selected*). This frees their entity IDs;
+   recorded history and statistics are kept.
+4. Add the integration.
+5. Open each new entity → ⚙️ and change its *Entity ID* to the old one.
+   History and statistics continue.
+
+Do steps 1–3 first: while the old package is loaded, two programs poll
+the same converter and its responses get mixed up. If *Developer tools →
+Statistics* reports a changed unit afterwards, update the unit of the old
+statistics there.
 
 | previous entity ID | new entity (rename target) |
 |---|---|
