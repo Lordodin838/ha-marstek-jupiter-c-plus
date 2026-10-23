@@ -70,15 +70,6 @@ CONFIG = {
                     "host": "IP-Adresse",
                     "port": "Port",
                     "unit_id": "Modbus-Adresse des Geräts",
-                    "adopt_legacy": "Bisherige Entity-IDs übernehmen",
-                },
-                "data_description": {
-                    "adopt_legacy": (
-                        "Übernimmt die IDs einer früheren YAML-Lösung, damit "
-                        "Verlauf, Statistik, Dashboards und Automationen "
-                        "weiterlaufen. Dafür muss das alte Paket vorher "
-                        "entfernt und Home Assistant neu gestartet sein."
-                    )
                 },
             }
         },
@@ -104,15 +95,6 @@ CONFIG = {
                     "host": "IP address",
                     "port": "Port",
                     "unit_id": "Modbus unit ID",
-                    "adopt_legacy": "Adopt existing entity IDs",
-                },
-                "data_description": {
-                    "adopt_legacy": (
-                        "Takes over the IDs of a previous YAML setup so that "
-                        "history, statistics, dashboards and automations keep "
-                        "working. The old package must be removed and Home "
-                        "Assistant restarted first."
-                    )
                 },
             }
         },
