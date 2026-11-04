@@ -81,6 +81,14 @@ jobs:
           python -m pyflakes custom_components/marstek_jupiter/
           python -m pytest tests/ -q
 
+      - name: ZIP fuer HACS bauen
+        run: |
+          # HACS laedt mit zip_release diese Datei statt des Quellcodes und
+          # zaehlt ihre Downloads - daher kommt der Zaehler in HACS.
+          # Die Dateien liegen im ZIP direkt im Wurzelverzeichnis.
+          cd custom_components/marstek_jupiter
+          zip -r "$GITHUB_WORKSPACE/marstek_jupiter.zip" . -x '__pycache__/*' '*.pyc'
+
       - name: Tag und Release anlegen
         env:
           GH_TOKEN: ${{ github.token }}
@@ -96,4 +104,5 @@ jobs:
             --target "$GITHUB_SHA" \
             --title "$VERSION" \
             --notes-file /tmp/notes.md \
-            $FLAG
+            $FLAG \
+            marstek_jupiter.zip
