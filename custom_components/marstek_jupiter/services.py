@@ -19,6 +19,7 @@ import voluptuous as vol
 from homeassistant.core import HomeAssistant, ServiceCall, ServiceResponse, SupportsResponse
 from homeassistant.exceptions import HomeAssistantError
 from homeassistant.helpers import config_validation as cv
+from homeassistant.util import slugify
 
 from .const import (
     DOMAIN,
@@ -336,7 +337,11 @@ def _write_report(
 ) -> str:
     os.makedirs(directory, exist_ok=True)
     stamp = datetime.now().strftime("%Y%m%d-%H%M")
-    base = os.path.join(directory, f"regdump_{label}_{stamp}")
+    # Das Label geht in den Dateinamen. Ein "/" oder ".." darin wuerde
+    # sonst in ein anderes Verzeichnis zeigen oder das Schreiben scheitern
+    # lassen; slugify laesst nur Kleinbuchstaben, Ziffern und "_" uebrig.
+    safe_label = slugify(label) or "abzug"
+    base = os.path.join(directory, f"regdump_{safe_label}_{stamp}")
 
     payload = {
         "erzeugt": datetime.now().isoformat(timespec="seconds"),

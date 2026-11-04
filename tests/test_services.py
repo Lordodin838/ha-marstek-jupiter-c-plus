@@ -1,6 +1,7 @@
 """Tests fuer services.py – isolierbare Hilfsfunktionen."""
 from __future__ import annotations
 
+import os
 import asyncio
 import pytest
 
@@ -213,3 +214,13 @@ def test_no_instance_raises():
 
     with pytest.raises(HomeAssistantError):
         _client_for_entry(_FakeHass([]))
+
+
+def test_write_report_label_cannot_escape_directory(tmp_path):
+    """Ein "/" im Label darf weder scheitern noch ein Unterverzeichnis treffen."""
+    from custom_components.marstek_jupiter.services import _write_report
+
+    result = {"register": {}, "grobsuche_treffer": [], "summary": {}}
+    path = _write_report(str(tmp_path), result, "vor/../update", False)
+    assert os.path.dirname(path) == str(tmp_path)
+    assert os.path.basename(path).startswith("regdump_vor_update_")
