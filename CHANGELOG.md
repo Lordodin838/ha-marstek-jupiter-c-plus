@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.2.5
+
+### Changed
+
+- **Releases ship as a ZIP file.** HACS now installs `marstek_jupiter.zip` from
+  the release instead of the source code, which also makes the download counter
+  in HACS work. Nothing changes in the integration itself.
+
+### Geändert
+
+- **Releases werden als ZIP-Datei ausgeliefert.** HACS installiert jetzt
+  `marstek_jupiter.zip` aus dem Release statt des Quellcodes, dadurch
+  funktioniert auch der Download-Zähler in HACS. An der Integration selbst
+  ändert sich nichts.
+
+---
+
 ## 1.2.4
 
 ### Fixed
