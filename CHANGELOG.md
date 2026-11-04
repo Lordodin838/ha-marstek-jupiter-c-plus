@@ -1,5 +1,22 @@
 # Changelog
 
+## 1.2.4
+
+### Fixed
+
+- **`register_dump` failed when the label contained a `/`.** The label went into
+  the file name unchanged, so `vor/update` raised an unhandled
+  `FileNotFoundError`. It now runs through `homeassistant.util.slugify` first
+  (thanks to @frenck for spotting this in the HACS review).
+
+### Behoben
+
+- **`register_dump` scheiterte, wenn das Label ein `/` enthielt.** Das Label ging
+  unverändert in den Dateinamen, `vor/update` führte zu einem unbehandelten
+  `FileNotFoundError`. Es läuft jetzt vorher durch `homeassistant.util.slugify`.
+
+---
+
 ## 1.2.3
 
 ### Fixed
