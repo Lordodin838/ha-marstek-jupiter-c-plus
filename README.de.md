@@ -11,7 +11,7 @@
 
 <p align="center">
   <a href="https://github.com/Lordodin838/ha-marstek-jupiter-c-plus/releases"><img src="https://img.shields.io/github/v/release/Lordodin838/ha-marstek-jupiter-c-plus?label=Version" alt="Version"></a>
-  <a href="https://hacs.xyz"><img src="https://img.shields.io/badge/HACS-Custom-41BDF5" alt="HACS"></a>
+  <a href="https://hacs.xyz"><img src="https://img.shields.io/badge/HACS-Default-41BDF5" alt="HACS"></a>
   <a href="https://github.com/Lordodin838/ha-marstek-jupiter-c-plus/actions/workflows/validate.yml"><img src="https://img.shields.io/github/actions/workflow/status/Lordodin838/ha-marstek-jupiter-c-plus/validate.yml?label=Tests" alt="Tests"></a>
 </p>
 
@@ -43,16 +43,20 @@ Getestet mit Firmware 142.37.213.110, Gerätetyp Jupiter C 800 W.
 
 **Über HACS**
 
-1. HACS → ⋮ → *Benutzerdefinierte Repositories*
-2. `https://github.com/Lordodin838/ha-marstek-jupiter-c-plus`
-   eintragen, Kategorie *Integration*
-3. *Marstek Jupiter C+* herunterladen und Home Assistant neu starten
-4. *Einstellungen → Geräte & Dienste → Integration hinzufügen →
+[![In HACS öffnen](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Lordodin838&repository=ha-marstek-jupiter-c-plus&category=integration)
+
+1. HACS öffnen und nach *Marstek Jupiter C+* suchen – oder den Button oben verwenden
+2. *Herunterladen* und Home Assistant neu starten
+3. *Einstellungen → Geräte & Dienste → Integration hinzufügen →
    Marstek Jupiter C+*
-5. IP-Adresse des Umsetzers eingeben – fertig
+4. IP-Adresse des Umsetzers eingeben – fertig
 
 Neue Versionen meldet Home Assistant danach von selbst unter
 *Einstellungen → Updates*.
+
+> Früher unter *Benutzerdefinierte Repositories* eingetragen? Die
+> Integration steht jetzt in der HACS-Standardliste – den Eintrag kannst
+> du entfernen, die installierte Integration bleibt erhalten.
 
 **Einstellungen des Elfin**
 
