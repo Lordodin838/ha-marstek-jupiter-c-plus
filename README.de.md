@@ -76,8 +76,11 @@ Neue Versionen meldet Home Assistant danach von selbst unter
 <details>
 <summary><b>Installation von Hand</b></summary>
 
-Den Ordner `custom_components/marstek_jupiter` nach
-`config/custom_components/` kopieren und neu starten.
+`marstek_jupiter.zip` aus dem
+[neuesten Release](https://github.com/Lordodin838/ha-marstek-jupiter-c-plus/releases/latest)
+herunterladen, den Ordner `config/custom_components/marstek_jupiter/`
+anlegen und das ZIP dort hinein entpacken – die Dateien liegen im Archiv
+direkt, ohne Unterordner. Danach neu starten.
 
 **Der Ordner muss exakt `marstek_jupiter` heißen.** Home Assistant
 findet die Entitätsnamen über den Ordnernamen, nicht über die
@@ -93,7 +96,7 @@ HACS installiert kann das nicht passieren.
 
 ## Entitäten
 
-46 Entitäten am Gerät „Marstek Jupiter C+". Jede lässt sich in der
+48 Entitäten am Gerät „Marstek Jupiter C+". Jede lässt sich in der
 Oberfläche umbenennen.
 
 **Leistung und Batterie** · alle 10 s
@@ -106,12 +109,14 @@ Oberfläche umbenennen.
 | PV Gesamtleistung | W |
 | Netzleistung ¹ | W |
 | Batterieleistung (berechnet) ² | W |
+| Batterie Lade- / Entladeleistung ³ | W |
 | Ladezustand | % |
 | Batteriespannung | V |
 | Temperatur (unbestätigt) | °C |
 
 ¹ positiv = Abgabe, negativ = Bezug<br>
-² PV − Netzleistung; positiv = laden, negativ = entladen
+² PV − Netzleistung; positiv = laden, negativ = entladen<br>
+³ aus ² aufgeteilt, jeweils nur positiv – Ladeleistung beim Laden, Entladeleistung beim Entladen
 
 **Energie** · für das Energie-Dashboard
 
@@ -143,7 +148,8 @@ Zelle davon.
 | Geräte-ID, Gerätetyp | 60 s |
 | MAC-Adresse, Kommunikationsmodul-Firmware | 1 h |
 
-Standardmäßig abgeschaltet: *Gerätetyp (Code)* und *Temperatur roh*.
+Standardmäßig abgeschaltet: *Geräte-ID*, *Gerätetyp (Code)*, *MAC-Adresse*
+und *Temperatur roh*.
 
 <details>
 <summary><b>Registerkarte</b></summary>

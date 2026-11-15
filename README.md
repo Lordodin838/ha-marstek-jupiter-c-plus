@@ -75,8 +75,11 @@ Home Assistant then reports new versions on its own under
 <details>
 <summary><b>Manual installation</b></summary>
 
-Copy the folder `custom_components/marstek_jupiter` to
-`config/custom_components/` and restart.
+Download `marstek_jupiter.zip` from the
+[latest release](https://github.com/Lordodin838/ha-marstek-jupiter-c-plus/releases/latest),
+create the folder `config/custom_components/marstek_jupiter/` and unpack
+the ZIP into it – the files sit directly in the archive, without a
+subfolder. Then restart.
 
 **The folder must be named exactly `marstek_jupiter`.** Home Assistant
 finds the entity names through the folder name, not through
@@ -92,7 +95,7 @@ case. Installing via HACS avoids this entirely.
 
 ## Entities
 
-46 entities on the device “Marstek Jupiter C+”. Each one can be renamed
+48 entities on the device “Marstek Jupiter C+”. Each one can be renamed
 in the UI.
 
 **Power and battery** · every 10 s
@@ -105,12 +108,14 @@ in the UI.
 | PV total power | W |
 | Grid power ¹ | W |
 | Battery power (calculated) ² | W |
+| Battery charge / discharge power ³ | W |
 | State of charge | % |
 | Battery voltage | V |
 | Temperature (unconfirmed) | °C |
 
 ¹ positive = export, negative = import<br>
-² PV − grid power; positive = charging, negative = discharging
+² PV − grid power; positive = charging, negative = discharging<br>
+³ split from ², each only positive – charge power while charging, discharge power while discharging
 
 **Energy** · for the Energy dashboard
 
@@ -141,7 +146,8 @@ Below 50 mV the pack is healthy; above 100 mV a cell is drifting away.
 | Device ID, device type | 60 s |
 | MAC address, communication module firmware | 1 h |
 
-Disabled by default: *Device type (code)* and *Temperature raw*.
+Disabled by default: *Device ID*, *Device type (code)*, *MAC address* and
+*Temperature raw*.
 
 <details>
 <summary><b>Register map</b></summary>
