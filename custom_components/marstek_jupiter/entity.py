@@ -83,7 +83,14 @@ class JupiterEntity(CoordinatorEntity[JupiterCoordinator]):
 
         model = DEVICE_TYPES.get(regs.get(ADDR_DEVICE_TYPE, -1))
 
-        info = DeviceInfo(
+        # Seit HA 2026.11 ist DeviceInfo eine Dataclass. Felder nachtraeglich
+        # per info["..."] zu setzen laeuft nur noch ueber eine Uebergangs-
+        # schicht, die wieder entfernt wird - daher alles im Konstruktor.
+        extra = {}
+        mac = _mac_from_registers(self.coordinator)
+        if mac:
+            extra["connections"] = {(CONNECTION_NETWORK_MAC, mac)}
+        return DeviceInfo(
             identifiers={(DOMAIN, self._entry_id)},
             manufacturer=MANUFACTURER,
             name="Marstek Jupiter C+",
@@ -91,11 +98,8 @@ class JupiterEntity(CoordinatorEntity[JupiterCoordinator]):
             sw_version=sw_version,
             hw_version=hw_version,
             configuration_url=f"http://{self.coordinator.client.host}",
+            **extra,
         )
-        mac = _mac_from_registers(self.coordinator)
-        if mac:
-            info["connections"] = {(CONNECTION_NETWORK_MAC, mac)}
-        return info
 
     @property
     def available(self) -> bool:

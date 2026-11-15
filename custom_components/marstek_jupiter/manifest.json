@@ -1,6 +1,9 @@
 {
   "domain": "marstek_jupiter",
   "name": "Marstek Jupiter C+",
+  "categories": [
+    "energy.solar_batteries"
+  ],
   "codeowners": [
     "@Lordodin838"
   ],
@@ -14,5 +17,5 @@
     "custom_components.marstek_jupiter"
   ],
   "requirements": [],
-  "version": "1.2.5"
+  "version": "1.2.6"
 }

@@ -85,3 +85,39 @@ def test_error_text_has_no_second_source():
     assert sensor.native_value == "kein Fehler"
     assert "fallback_entity" not in sensor.extra_state_attributes
     assert not hasattr(sensor, "_fallback_entity")
+
+
+# ---------------------------------------------------------------------------
+# Geraeteinfo: MAC als Verbindung, ohne nachtraegliches Setzen
+# ---------------------------------------------------------------------------
+
+def _device_info_for(registers):
+    from custom_components.marstek_jupiter.const import ADDR_MAC
+
+    class _Client:
+        host = "192.0.2.10"
+
+    coordinator = _Coordinator()
+    coordinator.client = _Client()
+    coordinator.data = JupiterData()
+    for addr, value in registers.items():
+        coordinator.data.registers[addr] = value
+    description = next(d for d in sn.ENERGY_SENSORS if d.key == ENERGY_PV)
+    sensor = sn.JupiterEnergySensor(coordinator, "entry", description)
+    return sensor.device_info, ADDR_MAC
+
+
+def test_device_info_includes_mac_connection():
+    from custom_components.marstek_jupiter.const import ADDR_MAC
+
+    # "24215ee5674d" als ASCII-Paare, wie es das Geraet liefert
+    text = "24215ee5674d"
+    regs = {ADDR_MAC + i: (ord(text[2 * i]) << 8) | ord(text[2 * i + 1]) for i in range(6)}
+    info, _ = _device_info_for(regs)
+    assert info["connections"] == {("mac", "24:21:5e:e5:67:4d")}
+    assert info["identifiers"] == {("marstek_jupiter", "entry")}
+
+
+def test_device_info_without_mac_has_no_connections():
+    info, _ = _device_info_for({})
+    assert "connections" not in info

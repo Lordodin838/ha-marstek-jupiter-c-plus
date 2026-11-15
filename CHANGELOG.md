@@ -1,5 +1,29 @@
 # Changelog
 
+## 1.2.6
+
+### Changed
+
+- **Ready for Home Assistant 2026.11.** `DeviceInfo` is a dataclass there; the
+  MAC address was added afterwards with `info["connections"] = ...`, which only
+  works through a compatibility layer that HA will remove. All fields are now
+  passed to the constructor. Works unchanged on older versions.
+- **Integration category** `energy.solar_batteries` in `manifest.json`, so the
+  integration shows up under *Energy → Solar & batteries* in the Marketplace.
+- **README:** HACS is built into Home Assistant 2026.11 as the Marketplace.
+
+### Geändert
+
+- **Bereit für Home Assistant 2026.11.** `DeviceInfo` ist dort eine Dataclass;
+  die MAC-Adresse wurde nachträglich mit `info["connections"] = ...` gesetzt,
+  was nur noch über eine Übergangsschicht läuft, die HA wieder entfernt. Alle
+  Felder gehen jetzt in den Konstruktor. Ältere Versionen laufen unverändert.
+- **Integrationskategorie** `energy.solar_batteries` in `manifest.json`, damit
+  die Integration im Marketplace unter *Energie → Solar & Batterien* erscheint.
+- **README:** HACS ist ab Home Assistant 2026.11 als Marketplace eingebaut.
+
+---
+
 ## 1.2.5
 
 ### Changed

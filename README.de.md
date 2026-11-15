@@ -45,7 +45,9 @@ Getestet mit Firmware 142.37.213.110, Gerätetyp Jupiter C 800 W.
 
 [![In HACS öffnen](https://my.home-assistant.io/badges/hacs_repository.svg)](https://my.home-assistant.io/redirect/hacs_repository/?owner=Lordodin838&repository=ha-marstek-jupiter-c-plus&category=integration)
 
-1. HACS öffnen und nach *Marstek Jupiter C+* suchen – oder den Button oben verwenden
+1. HACS öffnen – ab Home Assistant 2026.11 eingebaut als
+   *Einstellungen → Marketplace* – und nach *Marstek Jupiter C+* suchen,
+   oder den Button oben verwenden
 2. *Herunterladen* und Home Assistant neu starten
 3. *Einstellungen → Geräte & Dienste → Integration hinzufügen →
    Marstek Jupiter C+*
