@@ -88,6 +88,14 @@ def _scaled(address: int, factor: float, digits: int):
     return _value
 
 
+def _scaled_signed(address: int, factor: float, digits: int):
+    def _value(data: JupiterData) -> StateType:
+        raw = data.registers.get(address)
+        return None if raw is None else round(to_int16(raw) * factor, digits)
+
+    return _value
+
+
 def _signed(address: int):
     def _value(data: JupiterData) -> StateType:
         raw = data.registers.get(address)
@@ -376,13 +384,14 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
     # PV zwischen 472 und 493 W lief). Der Tagesverlauf spricht fuer die
     # Innen- beziehungsweise Umgebungstemperatur: glatte Kurve, Minimum vor
     # Sonnenaufgang, Maximum am fruehen Nachmittag, und der Wert folgt der
-    # Umgebung statt der Last. "unbestaetigt" bleibt stehen, bis es jemand
+    # Umgebung statt der Last. Unter null zaehlt das Register als int16
+    # weiter (65516 = -2,0 Grad, gemessen bei Frost). "unbestaetigt" bleibt stehen, bis es jemand
     # auf einem zweiten Geraet nachvollzieht.
     JupiterSensorDescription(
         key="temperature",
         translation_key="temperature",
         addresses=(ADDR_TEMPERATURE,),
-        value_fn=_scaled(ADDR_TEMPERATURE, 0.1, 1),
+        value_fn=_scaled_signed(ADDR_TEMPERATURE, 0.1, 1),
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,
@@ -392,7 +401,7 @@ SENSORS: tuple[JupiterSensorDescription, ...] = (
         key="temperature_raw",
         translation_key="temperature_raw",
         addresses=(ADDR_TEMPERATURE,),
-        value_fn=_scaled(ADDR_TEMPERATURE, 0.1, 1),
+        value_fn=_scaled_signed(ADDR_TEMPERATURE, 0.1, 1),
         native_unit_of_measurement=UnitOfTemperature.CELSIUS,
         device_class=SensorDeviceClass.TEMPERATURE,
         state_class=SensorStateClass.MEASUREMENT,

@@ -1,5 +1,26 @@
 # Changelog
 
+## 1.2.7
+
+### Fixed
+
+- **Temperature stuck at 0.0 °C in frost.** Register `0x000E` is signed: at
+  -2.0 °C the device returns 65516, i.e. -20 as int16. The plausibility filter
+  checked the unsigned value against 0–70 °C and discarded every reading below
+  zero, so the sensor stayed on the last value above zero. The register is now
+  read as int16 and accepted between -30 and 70 °C.
+
+### Behoben
+
+- **Temperatur blieb bei Frost auf 0,0 °C stehen.** Register `0x000E` ist
+  vorzeichenbehaftet: Bei -2,0 °C liefert das Gerät 65516, als int16 also -20.
+  Der Plausibilitätsfilter prüfte den vorzeichenlosen Wert gegen 0–70 °C und
+  verwarf jeden Messwert unter null, der Sensor blieb auf dem letzten Wert über
+  null stehen. Das Register wird jetzt als int16 gelesen und zwischen -30 und
+  70 °C angenommen.
+
+---
+
 ## 1.2.6
 
 ### Changed

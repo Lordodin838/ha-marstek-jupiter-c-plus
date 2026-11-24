@@ -45,10 +45,21 @@ def test_temperature_below_five_degrees_passes():
     assert data.registers[0x000E] == 21
 
 
+def test_temperature_below_zero_passes_as_int16():
+    """Minusgrade kommen als int16: 65516 = -2,0 Grad (gemessen bei Frost)."""
+    data = JupiterData()
+    store = JupiterCoordinator._store
+    store(None, data, const.ADDR_TEMPERATURE, [21])
+    rejected = store(None, data, const.ADDR_TEMPERATURE, [65516])
+    assert rejected == 0
+    assert to_int16(data.registers[0x000E]) == -20
+
+
 def test_temperature_outlier_still_rejected():
     data = JupiterData()
     store = JupiterCoordinator._store
     store(None, data, const.ADDR_TEMPERATURE, [180])
-    rejected = store(None, data, const.ADDR_TEMPERATURE, [65500])
-    assert rejected == 1
+    # 80,0 Grad und -40,0 Grad liegen ausserhalb von -30 bis 70 Grad
+    assert store(None, data, const.ADDR_TEMPERATURE, [800]) == 1
+    assert store(None, data, const.ADDR_TEMPERATURE, [65136]) == 1
     assert data.registers[0x000E] == 180

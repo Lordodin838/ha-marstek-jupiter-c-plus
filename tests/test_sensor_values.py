@@ -30,3 +30,11 @@ def test_sensor_values():
     assert values["battery_power"] == -159
     assert values["battery_charge_power"] == 0
     assert values["battery_discharge_power"] == 159
+
+
+def test_temperature_below_zero():
+    """0x000E zaehlt unter null als int16 weiter (65516 = -2,0 Grad)."""
+    data = JupiterData(registers={**REGISTERS, 0x000E: 65516})
+    values = {d.key: d.value_fn(data) for d in sn.SENSORS}
+    assert values["temperature"] == -2.0
+    assert values["temperature_raw"] == -2.0

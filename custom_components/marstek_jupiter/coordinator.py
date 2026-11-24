@@ -30,6 +30,7 @@ from .const import (
     TIER_SLOW,
     TIER_STATIC,
     TIER_STATUS,
+    SIGNED_ADDRESSES,
     VALID_RANGES,
     ADDR_GRID_POWER,
     ADDR_PV_POWER,
@@ -273,7 +274,8 @@ class JupiterCoordinator(DataUpdateCoordinator[JupiterData]):
                 continue
 
             limits = VALID_RANGES.get(address)
-            if limits is not None and not limits[0] <= raw <= limits[1]:
+            checked = to_int16(raw) if address in SIGNED_ADDRESSES else raw
+            if limits is not None and not limits[0] <= checked <= limits[1]:
                 rejected += 1
                 _LOGGER.debug(
                     "0x%04X: Rohwert %d ausserhalb %s - verworfen, "
