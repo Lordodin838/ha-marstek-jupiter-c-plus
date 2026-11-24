@@ -156,7 +156,7 @@ Disabled by default: *Device ID*, *Device type (code)*, *MAC address* and
 |---|---|
 | `0x0001`–`0x000C` | PV1–4 voltage, current, power each |
 | `0x000D` | Grid power, **int16** |
-| `0x000E` | Temperature (unconfirmed) |
+| `0x000E` | Temperature (unconfirmed), **int16** |
 | `0x000F` | Battery voltage |
 | `0x0010` | State of charge |
 | `0x0011` | Error code (decimal; the manual lists it in hex) |
@@ -371,6 +371,18 @@ before and after.
 
 </details>
 
+<details>
+<summary><b>Alarm code 1345 from the Marstek app or cloud</b></summary>
+
+Observed only in frost (device temperature at or below 0 °C), for about
+a minute every few minutes. 1345 = 0x541 is not in the manual; it sits
+among the battery codes and is most likely the battery's cold protection
+– LiFePO4 cells must not be charged below 0 °C. It is an alarm, not an
+error: register `0x0011` stays at 0, so this integration does not report
+it.
+
+</details>
+
 ---
 
 ## Technical background
@@ -412,6 +424,9 @@ last good value is kept. The limits are in `const.py` under
 Grid power is read as **int16**. The widely used community map lists
 `0x000D` as unsigned – grid import would then show up as about
 65,000 W.
+
+Temperature (`0x000E`) is also read as **int16**: below zero the device
+returns e.g. 65516 = −2.0 °C. It is accepted between −30 and 70 °C.
 
 </details>
 

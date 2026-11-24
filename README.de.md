@@ -158,7 +158,7 @@ und *Temperatur roh*.
 |---|---|
 | `0x0001`–`0x000C` | PV1–4 je Spannung, Strom, Leistung |
 | `0x000D` | Netzleistung, **int16** |
-| `0x000E` | Temperatur (unbestätigt) |
+| `0x000E` | Temperatur (unbestätigt), **int16** |
 | `0x000F` | Batteriespannung |
 | `0x0010` | Ladezustand |
 | `0x0011` | Fehlercode (dezimal, Handbuch hexadezimal) |
@@ -374,6 +374,18 @@ einem Firmware-Update kann sich die Registerkarte verschoben haben.
 
 </details>
 
+<details>
+<summary><b>Alarmcode 1345 aus der Marstek-App oder -Cloud</b></summary>
+
+Nur bei Frost beobachtet (Gerätetemperatur bei oder unter 0 °C), jeweils
+etwa eine Minute alle paar Minuten. 1345 = 0x541 steht nicht im Handbuch;
+der Code liegt zwischen den Batterie-Codes und ist sehr wahrscheinlich der
+Kälteschutz der Batterie – LiFePO4-Zellen dürfen unter 0 °C nicht geladen
+werden. Es ist ein Alarm, kein Fehler: Register `0x0011` bleibt auf 0,
+diese Integration meldet ihn deshalb nicht.
+
+</details>
+
 ---
 
 ## Technischer Hintergrund
@@ -417,6 +429,10 @@ Die Netzleistung wird als **int16** gelesen. Die verbreitete
 Community-Karte führt `0x000D` als unsigned – ein Netzbezug erschiene
 dann als rund 65 000 W.
 
+Auch die Temperatur (`0x000E`) wird als **int16** gelesen: Unter null
+liefert das Gerät zum Beispiel 65516 = −2,0 °C. Angenommen werden Werte
+zwischen −30 und 70 °C.
+
 </details>
 
 <details>
@@ -426,6 +442,7 @@ dann als rund 65 000 W.
   Hauslast nach und überschwingt. Ein Shelly am Hausanschluss zeigt
   dasselbe. Nicht wegfiltern.
 - **Nach einem Firmware-Update** kann die Phasendiagnose auf 0 stehen –
+  das Gerät einmal neu starten.
 - **`0x0011` ist der Fehlercode**, nicht der Batteriestrom. Das Register
   liefert dezimal, was das Handbuch hexadezimal notiert
   (1062 = 0x426).

@@ -8,8 +8,7 @@
           "host": "IP-Adresse",
           "port": "Port",
           "unit_id": "Modbus-Adresse des Geräts"
-        },
-        "data_description": {}
+        }
       }
     },
     "error": {
